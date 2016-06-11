@@ -45,7 +45,6 @@ public class Student1 {
 		log.debug("学生信息列表：" + stu1List);
 	}
 	```
-	
 
 ##Contact and communication
 
