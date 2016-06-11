@@ -2,37 +2,26 @@ package com.jonk.bean;
 
 import java.util.Date;
 
-import com.jonk.annotation.Dictionary;
 import com.jonk.annotation.Row;
-import com.jonk.annotation.Sheet;
 
-@Sheet("学生")
-public class Student {
+public class Student1 {
 
-	@Row(index = 0)
+	// 如果Excel标题和属性名称一样，则可以不使用注解
 	private String 姓名;
-	@Row(value = "年龄", index = 5)
+
+	@Row("年龄")
+	// 对应Excel标题中的年龄列，以下类似
 	private Integer age;
-	@Row(value = "生日", index = 1)
+
+	@Row("生日")
+	// 日期类型，默认格式为 yyyy-MM-dd HH:mm:ss
 	private Date birthday;
-	@Row(value = "语文分数", index = 2)
+	@Row("语文分数")
 	private Double chineseScore;
-	@Row(value = "数学分数", index = 3)
+	@Row("数学分数")
 	private Double mathsScore;
-	@Row(value = "总分", index = 4)
+	@Row("总分") // 对应Excel中的公式，既 总分 = 语文分数 + 数学分数
 	private Double sumScore;
-
-	@Row(value = "性别", index = 6, dictionaries = { @Dictionary(name = "1", value = "男"),
-			@Dictionary(name = "2", value = "女"), @Dictionary(name = "0", value = "未知") })
-	private Integer gender;
-
-	public Integer getGender() {
-		return gender;
-	}
-
-	public void setGender(Integer gender) {
-		this.gender = gender;
-	}
 
 	public String get姓名() {
 		return 姓名;
@@ -84,8 +73,7 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Student [姓名=" + 姓名 + ", age=" + age + ", birthday=" + birthday + ", chineseScore=" + chineseScore
-				+ ", mathsScore=" + mathsScore + ", sumScore=" + sumScore + ", gender=" + gender + "]";
+		return "Student1 [姓名=" + 姓名 + ", age=" + age + ", birthday=" + birthday + ", chineseScore=" + chineseScore
+				+ ", mathsScore=" + mathsScore + ", sumScore=" + sumScore + "]";
 	}
-
 }
