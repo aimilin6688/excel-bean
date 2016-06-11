@@ -4,6 +4,7 @@
 
 ##使用说明
 
+- 有如图Excel表格
 ![有如图Excel表格](http://upload.dingshops.com/dengta_mobile/upload/d4/2016/06/11/20160611214930.png)
 
 - 定义JavaBean类型
