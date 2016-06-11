@@ -2,6 +2,7 @@ package com.jonk.bean;
 
 import java.util.Date;
 
+import com.jonk.annotation.Dictionary;
 import com.jonk.annotation.Row;
 
 public class Student1 {
@@ -22,6 +23,11 @@ public class Student1 {
 	private Double mathsScore;
 	@Row("总分") // 对应Excel中的公式，既 总分 = 语文分数 + 数学分数
 	private Double sumScore;
+
+	// 性别使用字典数据方式，自动转换
+	@Row(value = "性别", dictionaries = { @Dictionary(name = "1", value = "男"), @Dictionary(name = "2", value = "女"),
+			@Dictionary(name = "0", value = "未知") })
+	private Integer gender;
 
 	public String get姓名() {
 		return 姓名;
@@ -71,9 +77,18 @@ public class Student1 {
 		this.sumScore = sumScore;
 	}
 
+	public Integer getGender() {
+		return gender;
+	}
+
+	public void setGender(Integer gender) {
+		this.gender = gender;
+	}
+
 	@Override
 	public String toString() {
 		return "Student1 [姓名=" + 姓名 + ", age=" + age + ", birthday=" + birthday + ", chineseScore=" + chineseScore
-				+ ", mathsScore=" + mathsScore + ", sumScore=" + sumScore + "]";
+				+ ", mathsScore=" + mathsScore + ", sumScore=" + sumScore + ", gender=" + gender + "]";
 	}
+
 }
