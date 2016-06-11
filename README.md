@@ -4,6 +4,7 @@
 
 ##使用说明
 
+- 有如图Excel表格
 ![有如图Excel表格](http://upload.dingshops.com/dengta_mobile/upload/d4/2016/06/11/20160611214930.png)
 
 - 定义JavaBean类型
@@ -45,6 +46,12 @@ public class Student1 {
 		log.debug("学生信息列表：" + stu1List);
 	}
 	```
+	
+- 输出以下结果：
+
+  ```tex
+  	学生信息列表：[Student1 [姓名=张三, age=18, birthday=Fri May 20 10:20:39 CST 2016, chineseScore=100.0, mathsScore=99.0, sumScore=199.0], Student1 [姓名=李四, age=17, birthday=Sun Mar 20 19:23:16 CST 2016, chineseScore=20.09, mathsScore=87.7, sumScore=107.79], Student1 [姓名=王五, age=20, birthday=Tue Jan 12 18:33:28 CST 2016, chineseScore=33.5, mathsScore=33.3, sumScore=66.8], Student1 [姓名=测试1, age=30, birthday=Tue Jan 12 18:33:28 CST 2016, chineseScore=60.0, mathsScore=95.0, sumScore=155.0], Student1 [姓名=测试2, age=31, birthday=Wed Jan 13 18:33:28 CST 2016, chineseScore=61.1, mathsScore=80.0, sumScore=141.1]]
+  ```
 
 ##Contact and communication
 
