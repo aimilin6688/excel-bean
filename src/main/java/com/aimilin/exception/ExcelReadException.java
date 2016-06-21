@@ -4,7 +4,6 @@ package com.aimilin.exception;
  * Excel解析异常
  * 
  * @author LiuJunGuang
- * @date 2016年5月19日下午6:25:36
  */
 public class ExcelReadException extends RuntimeException {
 

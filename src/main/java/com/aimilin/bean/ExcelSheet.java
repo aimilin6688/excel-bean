@@ -8,7 +8,6 @@ import java.util.List;
  * ExcelSheet
  * 
  * @author LiuJunGuang
- * @date 2016年5月19日下午5:31:07
  */
 public class ExcelSheet {
 	private String name;
@@ -20,9 +19,8 @@ public class ExcelSheet {
 	 * 添加Sheet行
 	 * 
 	 * @author LiuJunGuang
-	 * @param row
-	 * @return
-	 * @date 2016年5月19日下午5:46:01
+	 * @param row ExcelRow 对象
+	 * @return ExcelRow 结果集，List 类型
 	 */
 	public List<ExcelRow> addRow(ExcelRow... row) {
 		if (rowList == null) {
@@ -35,6 +33,9 @@ public class ExcelSheet {
 		return this.rowList;
 	}
 
+	/**
+	 * @param headName 行标题数组
+	 */
 	public void addHeadRow(String... headName) {
 		if (headRow == null) {
 			headRow = new ExcelRow();
@@ -44,6 +45,9 @@ public class ExcelSheet {
 		}
 	}
 
+	/**
+	 * @param heads 行标题列表
+	 */
 	public void addHeadRow(List<String> heads) {
 		if (heads == null || heads.size() == 0) {
 			return;

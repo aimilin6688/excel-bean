@@ -24,7 +24,6 @@ import com.aimilin.exception.ExcelWriteException;
  * Excel写入工具类
  * 
  * @author LiuJunGuang
- * @date 2016年6月3日下午2:01:36
  */
 public class ExcelWriteUtils {
 
@@ -34,7 +33,6 @@ public class ExcelWriteUtils {
 	 * @author LiuJunGuang
 	 * @param excelType Excel文件类型枚举
 	 * @return 文件名已当前时间毫秒数作为文件名，后缀为指定的文件类型
-	 * @date 2016年6月9日下午11:18:16
 	 */
 	public static String getFileName(ExcelType excelType) {
 		Long time = System.currentTimeMillis();
@@ -49,9 +47,8 @@ public class ExcelWriteUtils {
 	 * 根据Excel 类型生成不同的WorkBook
 	 * 
 	 * @author LiuJunGuang
-	 * @param excelType
-	 * @return
-	 * @date 2016年6月7日下午3:33:24
+	 * @param excelType ExcelType 枚举类型
+	 * @return Workbook Excel工作簿
 	 */
 	public static Workbook getWorkbook(ExcelType excelType) {
 		Objects.requireNonNull(excelType, "excelType must not be NULL !");
@@ -68,7 +65,6 @@ public class ExcelWriteUtils {
 	 * @param excelResult Excel结果集
 	 * @param os 输出流
 	 * @param excelType Excel类型，如果格式为Excel2003格式，并且记录总行数超过了65535，则将结果集拆分多个Sheet，名称和原名称一样,多了索引
-	 * @date 2016年6月3日下午2:10:54
 	 */
 	public static void write(ExcelResult excelResult, OutputStream os, ExcelType excelType) {
 		Objects.requireNonNull(excelResult);
@@ -134,14 +130,7 @@ public class ExcelWriteUtils {
 		}
 	}
 
-	/**
-	 * 设置Excel行数据
-	 * 
-	 * @author LiuJunGuang
-	 * @param row
-	 * @param excelRow
-	 * @date 2016年6月7日下午4:00:24
-	 */
+	//设置Excel行数据
 	private static void setValue(Row row, ExcelRow excelRow) {
 		if (excelRow == null) {
 			return;
@@ -163,7 +152,6 @@ public class ExcelWriteUtils {
 	 * @param excelResult Excel结果集
 	 * @param excelType Excel类型
 	 * @return Excel数据字节流
-	 * @date 2016年6月7日下午4:48:03
 	 */
 	public static byte[] write(ExcelResult excelResult, ExcelType excelType) {
 		try {

@@ -7,9 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 
+ * 字典注解
  * @author LiuJunGuang
- * @date 2016年6月10日下午2:47:15
  */
 @Inherited
 @Target(ElementType.FIELD)
@@ -19,8 +18,7 @@ public @interface Dictionary {
 	 * 字典名称
 	 * 
 	 * @author LiuJunGuang
-	 * @return
-	 * @date 2016年6月10日下午2:52:42
+	 * @return 字符串
 	 */
 	public String name();
 
@@ -28,8 +26,7 @@ public @interface Dictionary {
 	 * 字典值
 	 * 
 	 * @author LiuJunGuang
-	 * @return
-	 * @date 2016年6月10日下午2:52:49
+	 * @return 字符串，字典值
 	 */
 	public String value();
 

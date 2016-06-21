@@ -9,7 +9,6 @@ import java.util.List;
  * Excel行
  * 
  * @author LiuJunGuang
- * @date 2016年5月19日下午5:34:48
  */
 public class ExcelRow {
 	private int index;

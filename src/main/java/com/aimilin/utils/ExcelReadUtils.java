@@ -26,7 +26,6 @@ import com.aimilin.exception.ExcelReadException;
  * Excel 读取工具类
  * 
  * @author LiuJunGuang
- * @date 2016年5月19日下午5:00:12
  */
 public class ExcelReadUtils {
 
@@ -78,11 +77,8 @@ public class ExcelReadUtils {
 	 * 根据Excel文件输入流 ，获取Excel工作薄对象
 	 * 
 	 * @param is 输入流
-	 * @return Workbook
-	 * @throws IOException - if an error occurs while reading the data
-	 * @throws InvalidFormatException - if the contents of the file cannot be parsed into a Workbook
-	 * @throws EncryptedDocumentException - If the workbook given is password protected
-	 * @date 2016年3月30日下午5:18:47
+	 * @return Workbook Excel工作博
+	 * @throws ExcelReadException - 从Input中读取失败，则抛出该异常
 	 */
 	public static Workbook getWorkbook(InputStream is) {
 		Objects.requireNonNull(is, "Excel InputStream must not be NULL !");
@@ -97,11 +93,8 @@ public class ExcelReadUtils {
 	 * 根据Excel文件地址 获取Excel工作薄对象
 	 * 
 	 * @param filePath excel文件地址
-	 * @return Workbook
-	 * @throws IOException - if an error occurs while reading the data
-	 * @throws InvalidFormatException - if the contents of the file cannot be parsed into a Workbook
-	 * @throws EncryptedDocumentException - If the workbook given is password protected
-	 * @date 2016年3月30日下午12:07:08
+	 * @return Workbook Excel工作博
+	 * @throws ExcelReadException - 从FilePath中读取失败，则抛出该异常，或者文件未找到等
 	 */
 	public static Workbook getWorkbook(String filePath) {
 		Objects.requireNonNull(filePath, "Excel file path must not be NULL !");
@@ -120,8 +113,7 @@ public class ExcelReadUtils {
 	 * @param includeHeader 是否包含第一行标题头，true - 包含第一行标题，false - 不包含第一行标题
 	 * @param includeBlankLine 是否包含空行 true - 包含，false - 忽略空行
 	 * @return ExcelResult 数据结果集，如果为空则返回null
-	 * @throws IOException 文件操作错误异常将抛出该异常
-	 * @date 2016年5月19日下午4:57:47
+	 * @throws ExcelReadException 文件读取错误
 	 */
 	public static ExcelResult read(byte[] bytes, boolean includeHeader, boolean includeBlankLine) {
 		try {
@@ -140,8 +132,7 @@ public class ExcelReadUtils {
 	 * @param includeHeader 是否包含第一行标题头，true - 包含第一行标题，false - 不包含第一行标题
 	 * @param includeBlankLine 是否包含空行 true - 包含，false - 忽略空行
 	 * @return ExcelResult 数据结果集，如果为空则返回null
-	 * @throws IOException 文件操作错误异常将抛出该异常
-	 * @date 2016年5月19日下午4:57:47
+	 * @throws ExcelReadException 文件读取错误
 	 */
 	public static ExcelResult read(InputStream is, boolean includeHeader, boolean includeBlankLine) {
 		try {
@@ -160,8 +151,7 @@ public class ExcelReadUtils {
 	 * @param includeHeader 是否包含第一行标题头，true - 包含第一行标题，false - 不包含第一行标题
 	 * @param includeBlankLine 是否包含空行 true - 包含，false - 忽略空行
 	 * @return ExcelResult 数据结果集，如果为空则返回null
-	 * @throws IOException 文件操作错误异常将抛出该异常
-	 * @date 2016年5月19日下午4:57:47
+	 * @throws ExcelReadException 文件读取错误
 	 */
 	public static ExcelResult read(String filePath, boolean includeHeader, boolean includeBlankLine) {
 		try {
@@ -180,8 +170,7 @@ public class ExcelReadUtils {
 	 * @param wb Excel 工作薄
 	 * @param includeHeader 是否忽略标题行（第一行），true - 包含，false - 忽略
 	 * @param includeBlankLine 是否包含空行 true - 包含，false - 忽略空行
-	 * @return
-	 * @date 2016年5月19日下午5:22:44
+	 * @return ExcelResult Excel结果集
 	 */
 	public static ExcelResult read(Workbook wb, boolean includeHeader, boolean includeBlankLine) {
 		Objects.requireNonNull(wb);
@@ -226,11 +215,10 @@ public class ExcelReadUtils {
 	 * 读取Sheet中的一行数据
 	 * 
 	 * @author LiuJunGuang
-	 * @param sheet
+	 * @param sheet Excel 中一个Sheet对象
 	 * @param rowNum 行号
 	 * @param includeBlankLine 是否包含空行，true 包含，false 不包含
-	 * @return
-	 * @date 2016年3月30日上午11:54:36
+	 * @return ExcelRow 行对象
 	 */
 	private static ExcelRow readRow(Sheet sheet, int rowNum, boolean includeBlankLine) {
 		ExcelRow row = new ExcelRow(rowNum);

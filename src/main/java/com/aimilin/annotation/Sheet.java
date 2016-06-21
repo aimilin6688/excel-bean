@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  * 对应Excel Sheet
  * 
  * @author LiuJunGuang
- * @date 2016年6月2日下午3:51:31
  */
 @Inherited
 @Target(ElementType.TYPE)
@@ -22,8 +21,7 @@ public @interface Sheet {
 	 * 
 	 * 
 	 * @author LiuJunGuang
-	 * @return
-	 * @date 2016年6月2日下午5:50:18
+	 * @return 字符串，默认为空字符串
 	 */
 	public String value() default "";
 
@@ -31,8 +29,7 @@ public @interface Sheet {
 	 * excel 中sheet的索引值，读取时优先级次与value，写入时和value一起指定sheet的索引和名称
 	 * 
 	 * @author LiuJunGuang
-	 * @return
-	 * @date 2016年6月2日下午5:50:30
+	 * @return int 索引号，默认为-1
 	 */
 	public int index() default -1;
 

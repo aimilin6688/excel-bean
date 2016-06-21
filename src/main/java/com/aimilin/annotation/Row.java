@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  * 对应Excel 一列
  * 
  * @author LiuJunGuang
- * @date 2016年6月2日下午3:52:48
  */
 @Inherited
 @Target(ElementType.FIELD)
@@ -26,8 +25,7 @@ public @interface Row {
 	 * </pre>
 	 * 
 	 * @author LiuJunGuang
-	 * @return
-	 * @date 2016年6月2日下午4:06:06
+	 * @return 字符串，默认为空字符串
 	 */
 	public String value() default "";
 
@@ -41,8 +39,7 @@ public @interface Row {
 	 * </pre>
 	 * 
 	 * @author LiuJunGuang
-	 * @return
-	 * @date 2016年6月2日下午4:06:14
+	 * @return int 索引号，默认为-1
 	 */
 	public int index() default -1;
 
@@ -51,7 +48,6 @@ public @interface Row {
 	 * 
 	 * @author LiuJunGuang
 	 * @return 字典数组
-	 * @date 2016年6月10日下午2:10:53
 	 */
 	public Dictionary[] dictionaries() default {};
 

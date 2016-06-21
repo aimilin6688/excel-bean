@@ -32,7 +32,6 @@ import com.aimilin.converter.ExtConvertUtilsBean;
  * Bean工具类
  * 
  * @author LiuJunGuang
- * @date 2016年6月2日下午3:40:06
  */
 public class BeanUtils {
 	private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
@@ -62,11 +61,10 @@ public class BeanUtils {
 	 * 获取字典中指定的类型值,如果字典中没有指定的值，则返回value
 	 * 
 	 * @author LiuJunGuang
-	 * @param rowField
-	 * @param value
+	 * @param rowField Row 注解
+	 * @param value 属性值
 	 * @param dic2value 字典值转换成对象值，true - 根据Dictionary 的value 查找，返回name，false - 根据Dictionary 的name查找，返回 value
-	 * @return
-	 * @date 2016年6月10日下午2:57:00
+	 * @return String  字典值，或者字典名称
 	 */
 	private static String getDictionaryValue(Row rowField, String value, boolean dic2value) {
 		if (rowField == null) {
@@ -96,10 +94,10 @@ public class BeanUtils {
 	 * 将excelResult 转换成javaBean
 	 * 
 	 * @author LiuJunGuang
-	 * @param excelResult
+	 * @param excelResult ExcelResult结果集
 	 * @param clazz clazz 需要生成的JavaBean对象
+	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
-	 * @date 2016年6月2日下午3:43:15
 	 */
 	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz) {
 		Sheet sheet = clazz.getAnnotation(Sheet.class);
@@ -122,11 +120,11 @@ public class BeanUtils {
 	 * 将excelResult 转换成javaBean
 	 * 
 	 * @author LiuJunGuang
-	 * @param excelResult
+	 * @param excelResult ExcelResult结果集
 	 * @param clazz clazz 需要生成的JavaBean对象
-	 * @param sheetIndex
+	 * @param sheetIndex sheetIndex 索引号
+	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
-	 * @date 2016年6月2日下午3:43:15
 	 */
 	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, int sheetIndex) {
 		return toBean(excelResult.toMap(sheetIndex), clazz, true);
@@ -136,11 +134,11 @@ public class BeanUtils {
 	 * 将excelResult 转换成javaBean
 	 * 
 	 * @author LiuJunGuang
-	 * @param excelResult
+	 * @param excelResult ExcelResult结果集
 	 * @param clazz clazz 需要生成的JavaBean对象
-	 * @param sheetName
+	 * @param sheetName ExcelSheet 名子
+	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
-	 * @date 2016年6月2日下午3:43:15
 	 */
 	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, String sheetName) {
 		return toBean(excelResult.toMap(sheetName), clazz, true);
@@ -150,10 +148,10 @@ public class BeanUtils {
 	 * 将ListMap 转换成javaBean
 	 * 
 	 * @author LiuJunGuang
-	 * @param list
+	 * @param list 需要转换成Bean对象的List数据
 	 * @param clazz clazz 需要生成的JavaBean对象
+	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
-	 * @date 2016年6月2日下午3:43:15
 	 */
 	public static <T> List<T> toBean(List<Map<String, String>> list, Class<T> clazz) {
 		return toBean(list, clazz, true);
@@ -163,10 +161,11 @@ public class BeanUtils {
 	 * 将ListMap 转换成javaBean
 	 * 
 	 * @author LiuJunGuang
-	 * @param list
-	 * @param clazz
+	 * @param list 需要转换成Bean对象的List数据
+	 * @param clazz 需要生成的JavaBean对象
+	 * @param ignoreException true 忽略异常信息，false 抛出异常信息
+	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果列表为空，或者为null，则直接返回null
-	 * @date 2016年6月2日下午3:43:15
 	 */
 	public static <T> List<T> toBean(List<Map<String, String>> list, Class<T> clazz, boolean ignoreException) {
 		if (list == null || list.size() == 0) {
@@ -187,8 +186,8 @@ public class BeanUtils {
 	 * 
 	 * @author LiuJunGuang
 	 * @param list 对象列表
-	 * @return
-	 * @date 2016年6月10日下午4:43:14
+	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @return ExcelResult Excel结果对象
 	 */
 	public static <T> ExcelResult toResult(List<T> list) {
 		return toResult(list, true);
@@ -198,10 +197,10 @@ public class BeanUtils {
 	 * 将结果对象转换成Excel结果集对象
 	 * 
 	 * @author LiuJunGuang
-	 * @param list
-	 * @param ignoreException
-	 * @return
-	 * @date 2016年6月10日下午4:40:29
+	 * @param list 对象列表
+	 * @param ignoreException true 忽略异常信息，false 抛出异常信息
+	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @return Excel结果对象
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T> ExcelResult toResult(List<T> list, boolean ignoreException) {
@@ -264,8 +263,8 @@ public class BeanUtils {
 	 * @author LiuJunGuang
 	 * @param map 属性值Map
 	 * @param clazz 需要生成的JavaBean对象
+	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果Map为空或者null，则返回 null,如果转换失败则返回null
-	 * @date 2016年6月2日下午4:51:05
 	 */
 	public static <T> T toBean(Map<String, String> map, Class<T> clazz) {
 		return toBean(map, clazz, true);
@@ -278,8 +277,8 @@ public class BeanUtils {
 	 * @param map 属性值Map
 	 * @param clazz 需要生成的JavaBean对象
 	 * @param ignoreException 是否忽略转换异常，true 忽略，异常之后返回null，否则抛出异常
+	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果Map为空或者null，则返回 null
-	 * @date 2016年6月2日下午4:51:05
 	 */
 	public static <T> T toBean(Map<String, String> map, Class<T> clazz, boolean ignoreException) {
 		if (map == null || map.isEmpty()) {
@@ -326,8 +325,8 @@ public class BeanUtils {
 	 * 
 	 * @author LiuJunGuang
 	 * @param list 对象列表
-	 * @return
-	 * @date 2016年6月10日下午3:57:18
+	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @return List 中封装的是Map
 	 */
 	public static <T> List<Map<String, String>> toMap(List<T> list) {
 		return toMap(list, true);
@@ -337,10 +336,10 @@ public class BeanUtils {
 	 * 将对象列表转换成Map列表
 	 * 
 	 * @author LiuJunGuang
-	 * @param list
-	 * @param ignoreException
-	 * @return
-	 * @date 2016年6月10日下午3:53:30
+	 * @param list 对象列表
+	 * @param ignoreException true 忽略转换中的异常，false  抛出转换中的异常信息
+	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @return List 中封装的是Map
 	 */
 	public static <T> List<Map<String, String>> toMap(List<T> list, boolean ignoreException) {
 		if (list == null || list.size() == 0) {
@@ -361,9 +360,9 @@ public class BeanUtils {
 	 * 将Java对象转换成Map对象,并忽略异常信息
 	 * 
 	 * @author LiuJunGuang
-	 * @param obj
-	 * @return
-	 * @date 2016年6月10日下午3:58:08
+	 * @param obj 对象
+	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @return Map 如果属性有注解，则key - 为Row 注解中的名称，value 为属性值
 	 */
 	public static <T> Map<String, String> toMap(T obj) {
 		return toMap(obj, true);
@@ -373,9 +372,10 @@ public class BeanUtils {
 	 * 将Java对象转换成Map对象
 	 * 
 	 * @author LiuJunGuang
-	 * @param obj
-	 * @return
-	 * @date 2016年6月10日下午3:22:53
+	 * @param obj 对象
+	 * @param ignoreException true 忽略转换中的异常，false  抛出转换中的异常信息
+	 * @param <T> 任意对象类型
+	 * @return Map 如果属性有注解，则key - 为Row 注解中的名称，value 为属性值
 	 */
 	public static <T> Map<String, String> toMap(T obj, boolean ignoreException) {
 		if (obj == null) {

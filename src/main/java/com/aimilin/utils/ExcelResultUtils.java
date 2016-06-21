@@ -21,16 +21,14 @@ import com.aimilin.bean.SellectSheetByName;
  * Excel结果处理类
  * 
  * @author LiuJunGuang
- * @date 2016年6月2日下午5:11:35
  */
 public class ExcelResultUtils {
 	private static Logger log = LoggerFactory.getLogger(ExcelResultUtils.class);
 
 	/**
 	 * 将Excel结果集转换成List
-	 * 
-	 * @return
-	 * @date 2016年5月20日下午4:27:08
+	 * @param excelResult Excel结果集
+	 * @return List 数据列表
 	 */
 	public static List<List<String>> toList(ExcelResult excelResult) {
 		return toList(excelResult, new SellectSheetAll());
@@ -42,8 +40,7 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
 	 * @param sheetIndex sheet索引值，从0开始
-	 * @return
-	 * @date 2016年6月2日下午5:14:30
+	 * @return  List 数据列表
 	 */
 	public static List<List<String>> toList(final ExcelResult excelResult, final int sheetIndex) {
 		if (sheetIndex < 0) {
@@ -56,10 +53,9 @@ public class ExcelResultUtils {
 	 * 将指定的Sheet转换成List
 	 * 
 	 * @author LiuJunGuang
-	 * @param excelResult
-	 * @param sellectSheet
-	 * @return
-	 * @date 2016年6月2日下午5:15:24
+	 * @param excelResult  Excel结果集
+	 * @param sellectSheet sheet索引值，从0开始
+	 * @return  List 数据列表
 	 */
 	public static List<List<String>> toList(ExcelResult excelResult, SellectSheet sellectSheet) {
 		if (excelResult == null) {
@@ -92,9 +88,8 @@ public class ExcelResultUtils {
 	 * 
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
-	 * @param sheetName
-	 * @return
-	 * @date 2016年6月2日下午5:14:30
+	 * @param sheetName sheet名称，如果指定，则只有符合条件的话，才会转换
+	 * @return List 数据列表
 	 */
 	public static List<List<String>> toList(final ExcelResult excelResult, final String sheetName) {
 		if (sheetName == null || "".equals(sheetName)) {
@@ -105,9 +100,8 @@ public class ExcelResultUtils {
 
 	/**
 	 * 将Excel结果集转换成Map
-	 * 
-	 * @return
-	 * @date 2016年5月20日下午4:27:08
+	 * @param excelResult Excel结果集
+	 * @return  List 数据列表 ，Map 中  key - Excel标题名称，value - Excel单元格值
 	 */
 	public static List<Map<String, String>> toMap(ExcelResult excelResult) {
 		return toMap(excelResult, new SellectSheetAll());
@@ -117,10 +111,9 @@ public class ExcelResultUtils {
 	 * 将 index 为 sheetIndex 的Sheet 转换成Map
 	 * 
 	 * @author LiuJunGuang
-	 * @param excelResult
-	 * @param sheetIndex
-	 * @return
-	 * @date 2016年6月2日下午5:28:19
+	 * @param excelResult Excel 结果集
+	 * @param sheetIndex sheet 索引号，从0开始
+	 * @return  List 数据列表 ，Map 中  key - Excel标题名称，value - Excel单元格值
 	 */
 	public static List<Map<String, String>> toMap(ExcelResult excelResult, final int sheetIndex) {
 		if (sheetIndex < 0) {
@@ -131,10 +124,10 @@ public class ExcelResultUtils {
 
 	/**
 	 * 将Excel结果集转换成Map<br>
-	 * <b>注意：</b>请确保结果集中包含标题，转换的Map是以第一行为Key，请确保Excel表格第一行标题不重复
-	 * 
-	 * @return
-	 * @date 2016年5月20日下午4:27:30
+	 * <b>注意：</b>请确保 结果集中包含标题，转换的Map是以第一行为Key，请确保Excel表格第一行标题不重复
+	 * @param excelResult Excel 结果集
+	 * @param sellectSheet 需要选择的ExcelSheet 接口
+	 * @return  List 数据列表 ，Map 中  key - Excel标题名称，value - Excel单元格值
 	 */
 	public static List<Map<String, String>> toMap(ExcelResult excelResult, SellectSheet sellectSheet) {
 		if (excelResult == null) {
@@ -188,9 +181,8 @@ public class ExcelResultUtils {
 	 * 
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
-	 * @param sheetName
-	 * @return
-	 * @date 2016年6月2日下午5:27:58
+	 * @param sheetName Excel sheet名称，只有当名称等于该值，才会转换
+	 * @return List 数据列表 ，Map 中  key - Excel标题名称，value - Excel单元格值
 	 */
 	public static List<Map<String, String>> toMap(ExcelResult excelResult, final String sheetName) {
 		if (sheetName == null || "".equals(sheetName)) {
@@ -204,8 +196,7 @@ public class ExcelResultUtils {
 	 * 
 	 * @author LiuJunGuang
 	 * @param dataList 数据集合
-	 * @return
-	 * @date 2016年6月10日下午9:27:12
+	 * @return Excel结果集
 	 */
 	public static ExcelResult toResult(List<List<String>> dataList) {
 		return toResult(dataList, "sheet");
@@ -219,7 +210,6 @@ public class ExcelResultUtils {
 	 * @param sheetName sheet名称
 	 * @param heads 标题头
 	 * @return 结果集
-	 * @date 2016年6月10日下午9:24:32
 	 */
 	public static ExcelResult toResult(List<List<String>> dataList, String sheetName, String... heads) {
 		if (dataList == null || dataList.size() == 0) {
@@ -245,7 +235,6 @@ public class ExcelResultUtils {
 	 * @param sheetName sheet名称
 	 * @param heads 标题头
 	 * @return 结果集
-	 * @date 2016年6月10日下午9:24:32
 	 */
 	public static ExcelResult toResult(List<List<String>> dataList, String sheetName, List<String> heads) {
 		if (heads == null) {
@@ -260,8 +249,8 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param listMap 数据
 	 * @param heads Excel标题,Map中的key值与heads名称一一对应，默认使用heads名称从map中取值
-	 * @return ExcelResult
-	 * @date 2016年6月10日下午9:46:08
+	 * @param <T>  任意类型的对象
+	 * @return ExcelResult Excel 结果集
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads) {
 		return toResult(listMap, heads, heads, "", "sheet");
@@ -274,8 +263,8 @@ public class ExcelResultUtils {
 	 * @param listMap 数据
 	 * @param heads Excel标题
 	 * @param props head 标题对应的map中的key值，注意Heads 和 props 列表属性需要一一对应
+	 * @param <T>  任意类型的对象
 	 * @return ExcelResult 结果对象
-	 * @date 2016年6月10日下午9:45:37
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props) {
 		return toResult(listMap, heads, props, "", "sheet");
@@ -289,8 +278,8 @@ public class ExcelResultUtils {
 	 * @param heads Excel标题
 	 * @param props head 标题对应的map中的key值，注意Heads 和 props 列表属性需要一一对应
 	 * @param defaultValue 如果map中没有取到heads对应值，则使用默认值
+	 * @param <T>  任意类型的对象
 	 * @return ExcelResult 结果对象
-	 * @date 2016年6月10日下午9:44:44
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props,
 			String defaultValue) {
@@ -305,8 +294,8 @@ public class ExcelResultUtils {
 	 * @param headToProp 标题属性对应关系，key - Excel标题，value - map中属性名称
 	 * @param defaultValue 默认值
 	 * @param sheetName 默认sheet名称
-	 * @return
-	 * @date 2016年6月11日下午4:35:24
+	 * @param <T> 任意类型对象
+	 * @return ExcelResult Excel结果集
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, Map<String, String> headToProp,
 			String defaultValue, String sheetName) {
@@ -331,8 +320,8 @@ public class ExcelResultUtils {
 	 * @param props head 标题对应的map中的key值，注意Heads 和 props 列表属性需要一一对应
 	 * @param defaultValue 如果map中没有取到heads对应值，则使用默认值
 	 * @param sheetName sheet 名称
+	 * @param <T> 任意类型对象
 	 * @return ExcelResult对象
-	 * @date 2016年6月10日下午9:30:41
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props,
 			String defaultValue, String sheetName) {

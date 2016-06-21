@@ -7,7 +7,6 @@ import java.util.List;
  * List操作工具类
  * 
  * @author LiuJunGuang
- * @date 2016年6月7日下午4:12:42
  */
 public class ListUtils {
 	/**
@@ -16,8 +15,8 @@ public class ListUtils {
 	 * @author LiuJunGuang
 	 * @param list 需要拆分的列表
 	 * @param size 每个子列表最大元素个数
+	 * @param <T> 任意类型数据
 	 * @return 拆分之后的列表
-	 * @date 2014年8月25日下午6:57:34
 	 */
 	public static <T> List<List<T>> split(List<T> list, int size) {
 		if (list == null || list.size() == 0)

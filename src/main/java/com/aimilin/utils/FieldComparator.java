@@ -9,7 +9,6 @@ import com.aimilin.annotation.Row;
  * 属性排序器
  * 
  * @author LiuJunGuang
- * @date 2016年6月10日下午3:42:57
  */
 public class FieldComparator implements Comparator<Field> {
 

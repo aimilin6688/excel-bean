@@ -13,7 +13,6 @@ import com.aimilin.utils.ExcelUtils;
  * 测试读取
  * 
  * @author LiuJunGuang
- * @date 2016年5月19日下午6:27:01
  */
 public class ExcelUtilsTest {
 	private Logger log = LoggerFactory.getLogger(ExcelUtilsTest.class);

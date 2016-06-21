@@ -16,7 +16,6 @@ import com.aimilin.utils.ExcelUtils;
 /**
  * 
  * @author LiuJunGuang
- * @date 2016年6月2日下午4:21:09
  */
 public class BeanUtilsTest {
 	@Test

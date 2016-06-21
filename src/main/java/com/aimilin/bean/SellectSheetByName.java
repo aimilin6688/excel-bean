@@ -3,7 +3,6 @@ package com.aimilin.bean;
 /**
  * 
  * @author LiuJunGuang
- * @date 2016年6月2日下午5:21:55
  */
 public class SellectSheetByName implements SellectSheet {
 	private String sheetName;

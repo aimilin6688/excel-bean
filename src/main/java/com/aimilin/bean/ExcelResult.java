@@ -10,7 +10,6 @@ import com.aimilin.utils.ExcelResultUtils;
  * 存放Excel读取结果
  * 
  * @author LiuJunGuang
- * @date 2016年5月19日下午5:29:31
  */
 public class ExcelResult {
 	private List<ExcelSheet> sheetList;
@@ -32,9 +31,8 @@ public class ExcelResult {
 	/**
 	 * 添加ExcelSheet
 	 * 
-	 * @param sheet
-	 * @return
-	 * @date 2016年5月19日下午5:38:25
+	 * @param sheet ExcelSheet 对象
+	 * @return ExcelSheet 结果集
 	 */
 	public List<ExcelSheet> addSheet(ExcelSheet sheet) {
 		if (sheetList == null) {

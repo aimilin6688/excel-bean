@@ -4,7 +4,6 @@ package com.aimilin.exception;
  * Excel写入异常
  * 
  * @author LiuJunGuang
- * @date 2016年6月3日下午2:16:14
  */
 public class ExcelWriteException extends RuntimeException {
 	/**
