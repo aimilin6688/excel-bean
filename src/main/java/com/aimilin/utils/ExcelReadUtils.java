@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
@@ -62,9 +61,16 @@ public class ExcelReadUtils {
 			break;
 		case Cell.CELL_TYPE_FORMULA:
 			try {
+				//先按照字符串格式获取
 				value = String.valueOf(cell.getStringCellValue());
-			} catch (IllegalStateException e) {
-				value = String.valueOf(cell.getNumericCellValue());
+			} catch (Exception e) {
+				try {
+					//获取数字类型的结果
+					value = String.valueOf(cell.getNumericCellValue());
+				} catch (Exception e1) {
+					//获取公式
+					value = cell.getCellFormula();
+				}
 			}
 			break;
 		default:

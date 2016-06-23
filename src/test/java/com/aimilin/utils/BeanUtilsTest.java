@@ -7,17 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.aimilin.bean.ExcelResult;
 import com.aimilin.bean.Student;
-import com.aimilin.utils.BeanUtils;
-import com.aimilin.utils.ExcelUtils;
 
 /**
  * 
  * @author LiuJunGuang
  */
 public class BeanUtilsTest {
+	private Logger log = LoggerFactory.getLogger(getClass());
 	@Test
 	public void test01() {
 		Map<String, String> map = new LinkedHashMap<String, String>();
@@ -28,7 +29,7 @@ public class BeanUtilsTest {
 		map.put("数学分数", "99.3");
 		map.put("性别", "女");
 		Student stu = BeanUtils.toBean(map, Student.class);
-		System.out.println(stu);
+		log.debug(""+stu);
 	}
 
 	@Test

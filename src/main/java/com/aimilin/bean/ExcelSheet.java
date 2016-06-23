@@ -104,6 +104,10 @@ public class ExcelSheet {
 	public ExcelRow getHeadRow() {
 		return headRow;
 	}
+	
+	public List<String> getHeads(){
+		return headRow.getCellList();
+	}
 
 	public void setHeadRow(ExcelRow headRow) {
 		this.headRow = headRow;

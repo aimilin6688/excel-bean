@@ -73,6 +73,10 @@ public class ExcelResult {
 	public List<Map<String, String>> toMap(String sheetName) {
 		return ExcelResultUtils.toMap(this, sheetName);
 	}
+	
+	public List<String> getHeads(int sheetIndex){
+		return sheetList.get(sheetIndex).getHeads();
+	}
 
 	@Override
 	public String toString() {

@@ -13,7 +13,7 @@
     </description>
 	<url>https://github.com/aimilin6688/excel-bean</url>
 
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<poi-version>3.14</poi-version>
@@ -23,24 +23,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>${poi-version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>${poi-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml-schemas</artifactId>
 			<version>${poi-version}</version>
 		</dependency>
 		<dependency>
@@ -49,9 +33,23 @@
 			<version>${slf4j-version}</version>
 		</dependency>
 		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>${slf4j-version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -59,14 +57,8 @@
 			<version>${slf4j-version}</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.2</version>
-		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -111,15 +103,15 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
-	
+
+
 	<scm>
 		<connection>scm:git:https://github.com/aimilin6688/excel-bean.git</connection>
 		<developerConnection>scm:git:https://github.com/aimilin6688/excel-bean.git</developerConnection>
 		<url>https://github.com/aimilin6688/excel-bean</url>
 		<tag>v0.0.1-bate1</tag>
 	</scm>
-	
+
 	<licenses>
 		<license>
 			<name>The MIT License (MIT)</name>
@@ -135,8 +127,8 @@
 			<organizationUrl>http://www.liujunguang.cn</organizationUrl>
 		</developer>
 	</developers>
-	
-	
+
+
 
 	<profiles>
 		<profile>
