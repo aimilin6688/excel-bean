@@ -36,25 +36,29 @@ import com.aimilin.converter.ExtConvertUtilsBean;
 public class BeanUtils {
 	private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
 	private static FieldComparator fieldComparator = new FieldComparator();
+	private static CalendarConverter calendarConverter = new CalendarConverter(null);
+	private static DateConverter dateConverter = new DateConverter(null);
+	private static SqlDateConverter sqlDateConverter = new SqlDateConverter(null);
+	private static SqlTimeConverter sqlTimeConverter = new SqlTimeConverter(null);
 	static {
-		String[] patterns = { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd" };
-		CalendarConverter calendarConverter = new CalendarConverter(null);
-		calendarConverter.setPatterns(patterns);
-
-		DateConverter dateConverter = new DateConverter(null);
-		dateConverter.setPatterns(patterns);
-
-		SqlDateConverter sqlDateConverter = new SqlDateConverter(null);
-		sqlDateConverter.setPatterns(patterns);
-
-		SqlTimeConverter sqlTimeConverter = new SqlTimeConverter(null);
-		sqlTimeConverter.setPatterns(patterns);
-
+		String[] patterns = { "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yy-MM-dd HH:mm:ss", "yyyy-MM-dd",
+				"MM/dd/yyyy", "HH:mm:ss" };
+		setPatterns(patterns);
 		BeanUtilsBean.setInstance(new BeanUtilsBean(new ExtConvertUtilsBean()));
 		ConvertUtils.register(calendarConverter, Calendar.class);
 		ConvertUtils.register(dateConverter, java.util.Date.class);
 		ConvertUtils.register(sqlDateConverter, java.sql.Date.class);
 		ConvertUtils.register(sqlTimeConverter, java.sql.Time.class);
+	}
+
+	/**
+	 * @param patterns 日期转换时，日期的格式
+	 */
+	public static void setPatterns(String... patterns) {
+		calendarConverter.setPatterns(patterns);
+		dateConverter.setPatterns(patterns);
+		sqlDateConverter.setPatterns(patterns);
+		sqlTimeConverter.setPatterns(patterns);
 	}
 
 	/**
@@ -64,7 +68,7 @@ public class BeanUtils {
 	 * @param rowField Row 注解
 	 * @param value 属性值
 	 * @param dic2value 字典值转换成对象值，true - 根据Dictionary 的value 查找，返回name，false - 根据Dictionary 的name查找，返回 value
-	 * @return String  字典值，或者字典名称
+	 * @return String 字典值，或者字典名称
 	 */
 	private static String getDictionaryValue(Row rowField, String value, boolean dic2value) {
 		if (rowField == null) {
@@ -337,7 +341,7 @@ public class BeanUtils {
 	 * 
 	 * @author LiuJunGuang
 	 * @param list 对象列表
-	 * @param ignoreException true 忽略转换中的异常，false  抛出转换中的异常信息
+	 * @param ignoreException true 忽略转换中的异常，false 抛出转换中的异常信息
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return List 中封装的是Map
 	 */
@@ -373,7 +377,7 @@ public class BeanUtils {
 	 * 
 	 * @author LiuJunGuang
 	 * @param obj 对象
-	 * @param ignoreException true 忽略转换中的异常，false  抛出转换中的异常信息
+	 * @param ignoreException true 忽略转换中的异常，false 抛出转换中的异常信息
 	 * @param <T> 任意对象类型
 	 * @return Map 如果属性有注解，则key - 为Row 注解中的名称，value 为属性值
 	 */

@@ -9,8 +9,8 @@ import com.aimilin.annotation.Sheet;
 @Sheet("学生")
 public class Student {
 
-	@Row(index = 0)
-	private String 姓名;
+	@Row(value = "姓名", index = 0)
+	private String name;
 	@Row(value = "年龄", index = 5)
 	private Integer age;
 	@Row(value = "生日", index = 1)
@@ -34,12 +34,12 @@ public class Student {
 		this.gender = gender;
 	}
 
-	public String get姓名() {
-		return 姓名;
+	public String getName() {
+		return name;
 	}
 
-	public void set姓名(String 姓名) {
-		this.姓名 = 姓名;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getAge() {
@@ -84,7 +84,7 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Student [姓名=" + 姓名 + ", age=" + age + ", birthday=" + birthday + ", chineseScore=" + chineseScore
+		return "Student [姓名=" + name + ", age=" + age + ", birthday=" + birthday + ", chineseScore=" + chineseScore
 				+ ", mathsScore=" + mathsScore + ", sumScore=" + sumScore + ", gender=" + gender + "]";
 	}
 
