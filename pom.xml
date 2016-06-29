@@ -4,7 +4,7 @@
 
 	<groupId>com.aimilin</groupId>
 	<artifactId>excel-bean</artifactId>
-	<version>0.0.1-bate2</version>
+	<version>0.0.1-beta2</version>
 	<packaging>jar</packaging>
 
 	<name>excel-bean</name>
