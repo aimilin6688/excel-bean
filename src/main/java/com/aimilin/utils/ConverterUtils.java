@@ -1,4 +1,4 @@
-package com.aimilin.exception;
+package com.aimilin.utils;
 
 import com.aimilin.converter.DictionaryConverter;
 
