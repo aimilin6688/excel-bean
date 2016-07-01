@@ -103,6 +103,7 @@ public class BeanUtils {
 	 * @param excelResult ExcelResult结果集
 	 * @param clazz clazz 需要生成的JavaBean对象
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
 	 */
 	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, DictionaryConverter... converters) {
@@ -130,6 +131,7 @@ public class BeanUtils {
 	 * @param clazz clazz 需要生成的JavaBean对象
 	 * @param sheetIndex sheetIndex 索引号
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
 	 */
 	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, int sheetIndex, DictionaryConverter... converters) {
@@ -144,6 +146,7 @@ public class BeanUtils {
 	 * @param clazz clazz 需要生成的JavaBean对象
 	 * @param sheetName ExcelSheet 名子
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
 	 */
 	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, String sheetName,
@@ -158,6 +161,7 @@ public class BeanUtils {
 	 * @param list 需要转换成Bean对象的List数据
 	 * @param clazz clazz 需要生成的JavaBean对象
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
 	 */
 	public static <T> List<T> toBean(List<Map<String, String>> list, Class<T> clazz, DictionaryConverter... converters) {
@@ -172,6 +176,7 @@ public class BeanUtils {
 	 * @param clazz 需要生成的JavaBean对象
 	 * @param ignoreException true 忽略异常信息，false 抛出异常信息
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 如果列表为空，或者为null，则直接返回null
 	 */
 	public static <T> List<T> toBean(List<Map<String, String>> list, Class<T> clazz, boolean ignoreException,
@@ -195,6 +200,7 @@ public class BeanUtils {
 	 * @author LiuJunGuang
 	 * @param list 对象列表
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return ExcelResult Excel结果对象
 	 */
 	public static <T> ExcelResult toResult(List<T> list, DictionaryConverter... converters) {
@@ -208,6 +214,7 @@ public class BeanUtils {
 	 * @param list 对象列表
 	 * @param ignoreException true 忽略异常信息，false 抛出异常信息
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return Excel结果对象
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -286,6 +293,7 @@ public class BeanUtils {
 	 * @param clazz 需要生成的JavaBean对象
 	 * @param ignoreException 是否忽略转换异常，true 忽略，异常之后返回null，否则抛出异常
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 如果Map为空或者null，则返回 null
 	 */
 	public static <T> T toBean(Map<String, String> map, Class<T> clazz, boolean ignoreException,
@@ -349,6 +357,7 @@ public class BeanUtils {
 	 * @param list 对象列表
 	 * @param ignoreException true 忽略转换中的异常，false 抛出转换中的异常信息
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return List 中封装的是Map
 	 */
 	public static <T> List<Map<String, String>> toMap(List<T> list, boolean ignoreException, DictionaryConverter... converters) {
@@ -372,6 +381,7 @@ public class BeanUtils {
 	 * @author LiuJunGuang
 	 * @param obj 对象
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return Map 如果属性有注解，则key - 为Row 注解中的名称，value 为属性值
 	 */
 	public static <T> Map<String, String> toMap(T obj, DictionaryConverter... converters) {
@@ -385,6 +395,7 @@ public class BeanUtils {
 	 * @param obj 对象
 	 * @param ignoreException true 忽略转换中的异常，false 抛出转换中的异常信息
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return Map 如果属性有注解，则key - 为Row 注解中的名称，value 为属性值
 	 */
 	public static <T> Map<String, String> toMap(T obj, boolean ignoreException, DictionaryConverter... converters) {

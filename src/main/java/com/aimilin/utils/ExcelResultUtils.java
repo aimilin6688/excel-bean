@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +32,7 @@ public class ExcelResultUtils {
 	 * 将Excel结果集转换成List
 	 * 
 	 * @param excelResult Excel结果集
+	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
 	public static List<List<String>> toList(ExcelResult excelResult, DictionaryConverter... converters) {
@@ -45,6 +45,7 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
 	 * @param sheetIndex sheet索引值，从0开始
+	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
 	public static List<List<String>> toList(final ExcelResult excelResult, final int sheetIndex,
@@ -61,6 +62,7 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
 	 * @param sellectSheet sheet索引值，从0开始
+	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
 	public static List<List<String>> toList(ExcelResult excelResult, SellectSheet sellectSheet,
@@ -90,7 +92,7 @@ public class ExcelResultUtils {
 					for (int cellIndex = 0; cellIndex < cells.size(); cellIndex++) {
 						String value = ConverterUtils.converter(heads.get(cellIndex), cellIndex, cells.get(cellIndex),
 								converters);
-						cellList.add(StringUtils.defaultString(value, ""));
+						cellList.add(value == null ? "" : value);
 					}
 					list.add(cellList);
 				}
@@ -105,6 +107,7 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
 	 * @param sheetName sheet名称，如果指定，则只有符合条件的话，才会转换
+	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
 	public static List<List<String>> toList(final ExcelResult excelResult, final String sheetName,
@@ -119,6 +122,7 @@ public class ExcelResultUtils {
 	 * 将Excel结果集转换成Map
 	 * 
 	 * @param excelResult Excel结果集
+	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表 ，Map 中 key - Excel标题名称，value - Excel单元格值
 	 */
 	public static List<Map<String, String>> toMap(ExcelResult excelResult, DictionaryConverter... converters) {
@@ -131,6 +135,7 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param excelResult Excel 结果集
 	 * @param sheetIndex sheet 索引号，从0开始
+	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表 ，Map 中 key - Excel标题名称，value - Excel单元格值
 	 */
 	public static List<Map<String, String>> toMap(ExcelResult excelResult, final int sheetIndex,
@@ -147,6 +152,7 @@ public class ExcelResultUtils {
 	 * 
 	 * @param excelResult Excel 结果集
 	 * @param sellectSheet 需要选择的ExcelSheet 接口
+	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表 ，Map 中 key - Excel标题名称，value - Excel单元格值
 	 */
 	public static List<Map<String, String>> toMap(ExcelResult excelResult, SellectSheet sellectSheet,
@@ -202,6 +208,7 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
 	 * @param sheetName Excel sheet名称，只有当名称等于该值，才会转换
+	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表 ，Map 中 key - Excel标题名称，value - Excel单元格值
 	 */
 	public static List<Map<String, String>> toMap(ExcelResult excelResult, final String sheetName,
@@ -271,6 +278,7 @@ public class ExcelResultUtils {
 	 * @param listMap 数据
 	 * @param heads Excel标题,Map中的key值与heads名称一一对应，默认使用heads名称从map中取值
 	 * @param <T> 任意类型的对象
+	 * @param converters 可选，参数类型转换器
 	 * @return ExcelResult Excel 结果集
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, DictionaryConverter... converters) {
@@ -285,6 +293,7 @@ public class ExcelResultUtils {
 	 * @param heads Excel标题
 	 * @param props head 标题对应的map中的key值，注意Heads 和 props 列表属性需要一一对应
 	 * @param <T> 任意类型的对象
+	 * @param converters 可选，参数类型转换器
 	 * @return ExcelResult 结果对象
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props,
@@ -301,6 +310,7 @@ public class ExcelResultUtils {
 	 * @param props head 标题对应的map中的key值，注意Heads 和 props 列表属性需要一一对应
 	 * @param defaultValue 如果map中没有取到heads对应值，则使用默认值
 	 * @param <T> 任意类型的对象
+	 * @param converters 可选，参数类型转换器
 	 * @return ExcelResult 结果对象
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props,
@@ -317,6 +327,7 @@ public class ExcelResultUtils {
 	 * @param defaultValue 默认值
 	 * @param sheetName 默认sheet名称
 	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return ExcelResult Excel结果集
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, Map<String, String> headToProp, String defaultValue,
@@ -343,6 +354,7 @@ public class ExcelResultUtils {
 	 * @param defaultValue 如果map中没有取到heads对应值，则使用默认值
 	 * @param sheetName sheet 名称
 	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return ExcelResult对象
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props,
