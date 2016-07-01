@@ -1,3 +1,6 @@
+![ci](https://api.travis-ci.org/aimilin6688/excel-bean.svg?branch=master)
+![maven](https://img.shields.io/maven-central/v/com.aimilin/excel-bean.svg?style=flat-square)
+
 ##简介
 
 - excel-bean 主要功能是javabean与Excel数据行之间的互相转换，普通项目中都会有Excel的导入导出功能，使用该工具可以大大提高工作效率，使开发者不必关系复杂的Excel解析。
