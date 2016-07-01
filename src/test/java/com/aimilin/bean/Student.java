@@ -9,22 +9,33 @@ import com.aimilin.annotation.Sheet;
 @Sheet("学生")
 public class Student {
 
-	@Row(value = "姓名", index = 0)
+	@Row(value = "姓名")
 	private String name;
-	@Row(value = "年龄", index = 5)
+	@Row(value = "年龄")
 	private Integer age;
-	@Row(value = "生日", index = 1)
+	@Row(value = "生日")
 	private Date birthday;
-	@Row(value = "语文分数", index = 2)
+	@Row(value = "语文分数")
 	private Double chineseScore;
-	@Row(value = "数学分数", index = 3)
+	@Row(value = "数学分数")
 	private Double mathsScore;
-	@Row(value = "总分", index = 4)
+	@Row(value = "总分")
 	private Double sumScore;
 
-	@Row(value = "性别", index = 6, dictionaries = { @Dictionary(name = "1", value = "男"),
-			@Dictionary(name = "2", value = "女"), @Dictionary(name = "0", value = "未知") })
+	@Row(value = "性别", index = 6, dictionaries = { @Dictionary(name = "1", value = "男"), @Dictionary(name = "2", value = "女"),
+			@Dictionary(name = "0", value = "未知") })
 	private Integer gender;
+
+	@Row(value = "状态")
+	private Integer state;
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
 
 	public Integer getGender() {
 		return gender;
@@ -84,8 +95,8 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Student [姓名=" + name + ", age=" + age + ", birthday=" + birthday + ", chineseScore=" + chineseScore
-				+ ", mathsScore=" + mathsScore + ", sumScore=" + sumScore + ", gender=" + gender + "]";
+		return "Student [name=" + name + ", age=" + age + ", birthday=" + birthday + ", chineseScore=" + chineseScore
+				+ ", mathsScore=" + mathsScore + ", sumScore=" + sumScore + ", gender=" + gender + ", state=" + state + "]";
 	}
 
 }

@@ -17,6 +17,7 @@ import org.slf4j.profiler.Profiler;
 
 import com.aimilin.bean.ExcelResult;
 import com.aimilin.bean.Student;
+import com.hbzx.converter.StateConverter;
 
 import static org.junit.Assert.*;
 
@@ -52,14 +53,16 @@ public class BeanUtilsTest {
 		map.put("语文分数", "99.3");
 		map.put("数学分数", "89.34");
 		map.put("性别", "女");
+		map.put("状态", "启用");
 		BeanUtils.setPatterns(pattern);
-		Student stu = BeanUtils.toBean(map, Student.class);
+		Student stu = BeanUtils.toBean(map, Student.class, new StateConverter());
 		assertNotNull(stu);
 		assertEquals("张三", stu.getName());
 		assertEquals(Integer.valueOf(18), stu.getAge());
 		assertEquals(Double.valueOf(99.3), stu.getChineseScore());
 		assertEquals(Double.valueOf(89.34), stu.getMathsScore());
 		assertEquals(Integer.valueOf(2), stu.getGender());
+		assertEquals(Integer.valueOf(1), stu.getState());
 		assertEquals(date, DateFormatUtils.format(stu.getBirthday(), pattern));
 	}
 
@@ -75,19 +78,22 @@ public class BeanUtilsTest {
 		stu.setGender(1);
 		stu.setMathsScore(88.3);
 		stu.setName("张三");
+		stu.setState(2);
 
 		BeanUtils.setPatterns(pattern);
-		Map<String, String> map = BeanUtils.toMap(stu);
+		Map<String, String> map = BeanUtils.toMap(stu, new StateConverter());
 		assertNotNull(stu);
 		assertEquals("18", map.get("年龄"));
 		assertEquals("张三", map.get("姓名"));
 		assertEquals("88.3", map.get("数学分数"));
 		assertEquals("99.9", map.get("语文分数"));
 		assertEquals("男", map.get("性别"));
+		assertEquals("注销", map.get("状态"));
 		assertEquals(DateFormatUtils.format(date, pattern), map.get("生日"));
 	}
 
 	// bean转换成ExcelResult对象
+	@Test
 	public void testBean2ExcelResult() {
 		List<Student> stuList = new ArrayList<Student>();
 		int index = 1;
@@ -99,11 +105,12 @@ public class BeanUtilsTest {
 			index *= -1;
 			stu.setGender(1 + index);
 			stu.setMathsScore(88.3 - i);
+			stu.setState(2);
 			stuList.add(stu);
 		}
-		ExcelResult result = BeanUtils.toResult(stuList);
+		ExcelResult result = BeanUtils.toResult(stuList, new StateConverter());
 		System.out.println(result);
 
-		ExcelUtils.write(stuList, "c:/");
+		ExcelUtils.write(result, "c:/software/");
 	}
 }

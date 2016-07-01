@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,8 @@ import com.aimilin.bean.SellectSheet;
 import com.aimilin.bean.SellectSheetAll;
 import com.aimilin.bean.SellectSheetByIndex;
 import com.aimilin.bean.SellectSheetByName;
+import com.aimilin.converter.DictionaryConverter;
+import com.aimilin.exception.ConverterUtils;
 
 /**
  * Excel结果处理类
@@ -27,11 +31,12 @@ public class ExcelResultUtils {
 
 	/**
 	 * 将Excel结果集转换成List
+	 * 
 	 * @param excelResult Excel结果集
 	 * @return List 数据列表
 	 */
-	public static List<List<String>> toList(ExcelResult excelResult) {
-		return toList(excelResult, new SellectSheetAll());
+	public static List<List<String>> toList(ExcelResult excelResult, DictionaryConverter... converters) {
+		return toList(excelResult, new SellectSheetAll(), converters);
 	}
 
 	/**
@@ -40,24 +45,26 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
 	 * @param sheetIndex sheet索引值，从0开始
-	 * @return  List 数据列表
+	 * @return List 数据列表
 	 */
-	public static List<List<String>> toList(final ExcelResult excelResult, final int sheetIndex) {
+	public static List<List<String>> toList(final ExcelResult excelResult, final int sheetIndex,
+			DictionaryConverter... converters) {
 		if (sheetIndex < 0) {
 			throw new IllegalArgumentException("sheetName must not be larger 0!");
 		}
-		return toList(excelResult, new SellectSheetByIndex(sheetIndex));
+		return toList(excelResult, new SellectSheetByIndex(sheetIndex), converters);
 	}
 
 	/**
 	 * 将指定的Sheet转换成List
 	 * 
 	 * @author LiuJunGuang
-	 * @param excelResult  Excel结果集
+	 * @param excelResult Excel结果集
 	 * @param sellectSheet sheet索引值，从0开始
-	 * @return  List 数据列表
+	 * @return List 数据列表
 	 */
-	public static List<List<String>> toList(ExcelResult excelResult, SellectSheet sellectSheet) {
+	public static List<List<String>> toList(ExcelResult excelResult, SellectSheet sellectSheet,
+			DictionaryConverter... converters) {
 		if (excelResult == null) {
 			throw new IllegalArgumentException("excelResult must not be null!");
 		}
@@ -75,8 +82,17 @@ public class ExcelResultUtils {
 				if (rows == null || rows.size() == 0) {
 					continue;
 				}
+
+				List<String> heads = sheet.getHeads();
 				for (ExcelRow row : sheet.getRowList()) {
-					list.add(row.getCellList());
+					List<String> cells = row.getCellList();
+					List<String> cellList = new ArrayList<String>();
+					for (int cellIndex = 0; cellIndex < cells.size(); cellIndex++) {
+						String value = ConverterUtils.converter(heads.get(cellIndex), cellIndex, cells.get(cellIndex),
+								converters);
+						cellList.add(StringUtils.defaultString(value, ""));
+					}
+					list.add(cellList);
 				}
 			}
 		}
@@ -91,20 +107,22 @@ public class ExcelResultUtils {
 	 * @param sheetName sheet名称，如果指定，则只有符合条件的话，才会转换
 	 * @return List 数据列表
 	 */
-	public static List<List<String>> toList(final ExcelResult excelResult, final String sheetName) {
+	public static List<List<String>> toList(final ExcelResult excelResult, final String sheetName,
+			DictionaryConverter... converters) {
 		if (sheetName == null || "".equals(sheetName)) {
 			throw new IllegalArgumentException("sheetName must not be null!");
 		}
-		return toList(excelResult, new SellectSheetByName(sheetName));
+		return toList(excelResult, new SellectSheetByName(sheetName), converters);
 	}
 
 	/**
 	 * 将Excel结果集转换成Map
+	 * 
 	 * @param excelResult Excel结果集
-	 * @return  List 数据列表 ，Map 中  key - Excel标题名称，value - Excel单元格值
+	 * @return List 数据列表 ，Map 中 key - Excel标题名称，value - Excel单元格值
 	 */
-	public static List<Map<String, String>> toMap(ExcelResult excelResult) {
-		return toMap(excelResult, new SellectSheetAll());
+	public static List<Map<String, String>> toMap(ExcelResult excelResult, DictionaryConverter... converters) {
+		return toMap(excelResult, new SellectSheetAll(), converters);
 	}
 
 	/**
@@ -113,23 +131,26 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param excelResult Excel 结果集
 	 * @param sheetIndex sheet 索引号，从0开始
-	 * @return  List 数据列表 ，Map 中  key - Excel标题名称，value - Excel单元格值
+	 * @return List 数据列表 ，Map 中 key - Excel标题名称，value - Excel单元格值
 	 */
-	public static List<Map<String, String>> toMap(ExcelResult excelResult, final int sheetIndex) {
+	public static List<Map<String, String>> toMap(ExcelResult excelResult, final int sheetIndex,
+			DictionaryConverter... converters) {
 		if (sheetIndex < 0) {
 			throw new IllegalArgumentException("sheetName must not be larger 0!");
 		}
-		return toMap(excelResult, new SellectSheetByIndex(sheetIndex));
+		return toMap(excelResult, new SellectSheetByIndex(sheetIndex), converters);
 	}
 
 	/**
 	 * 将Excel结果集转换成Map<br>
 	 * <b>注意：</b>请确保 结果集中包含标题，转换的Map是以第一行为Key，请确保Excel表格第一行标题不重复
+	 * 
 	 * @param excelResult Excel 结果集
 	 * @param sellectSheet 需要选择的ExcelSheet 接口
-	 * @return  List 数据列表 ，Map 中  key - Excel标题名称，value - Excel单元格值
+	 * @return List 数据列表 ，Map 中 key - Excel标题名称，value - Excel单元格值
 	 */
-	public static List<Map<String, String>> toMap(ExcelResult excelResult, SellectSheet sellectSheet) {
+	public static List<Map<String, String>> toMap(ExcelResult excelResult, SellectSheet sellectSheet,
+			DictionaryConverter... converters) {
 		if (excelResult == null) {
 			throw new IllegalArgumentException("excelResult must not be null!");
 		}
@@ -162,10 +183,9 @@ public class ExcelResultUtils {
 				for (int k = 0; k < titles.size(); k++) {
 					String value = "";
 					try {
-						value = cells.get(k);
+						value = ConverterUtils.converter(titles.get(k), k, cells.get(k), converters);
 					} catch (Exception e) {
-						log.warn("转换Sheet({})时，第{}行，第{}列出错.错误：{}", sheet.getName(), row.getIndex() + 1, k + 1,
-								e.getMessage());
+						log.warn("转换Sheet({})时，第{}行，第{}列出错.错误：{}", sheet.getName(), row.getIndex() + 1, k + 1, e.getMessage());
 					}
 					map.put(titles.get(k), value);
 				}
@@ -182,13 +202,14 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
 	 * @param sheetName Excel sheet名称，只有当名称等于该值，才会转换
-	 * @return List 数据列表 ，Map 中  key - Excel标题名称，value - Excel单元格值
+	 * @return List 数据列表 ，Map 中 key - Excel标题名称，value - Excel单元格值
 	 */
-	public static List<Map<String, String>> toMap(ExcelResult excelResult, final String sheetName) {
+	public static List<Map<String, String>> toMap(ExcelResult excelResult, final String sheetName,
+			DictionaryConverter... converters) {
 		if (sheetName == null || "".equals(sheetName)) {
 			throw new IllegalArgumentException("sheetName must not be null!");
 		}
-		return toMap(excelResult, new SellectSheetByName(sheetName));
+		return toMap(excelResult, new SellectSheetByName(sheetName), converters);
 	}
 
 	/**
@@ -249,11 +270,11 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param listMap 数据
 	 * @param heads Excel标题,Map中的key值与heads名称一一对应，默认使用heads名称从map中取值
-	 * @param <T>  任意类型的对象
+	 * @param <T> 任意类型的对象
 	 * @return ExcelResult Excel 结果集
 	 */
-	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads) {
-		return toResult(listMap, heads, heads, "", "sheet");
+	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, DictionaryConverter... converters) {
+		return toResult(listMap, heads, heads, "", "sheet", converters);
 	}
 
 	/**
@@ -263,11 +284,12 @@ public class ExcelResultUtils {
 	 * @param listMap 数据
 	 * @param heads Excel标题
 	 * @param props head 标题对应的map中的key值，注意Heads 和 props 列表属性需要一一对应
-	 * @param <T>  任意类型的对象
+	 * @param <T> 任意类型的对象
 	 * @return ExcelResult 结果对象
 	 */
-	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props) {
-		return toResult(listMap, heads, props, "", "sheet");
+	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props,
+			DictionaryConverter... converters) {
+		return toResult(listMap, heads, props, "", "sheet", converters);
 	}
 
 	/**
@@ -278,12 +300,12 @@ public class ExcelResultUtils {
 	 * @param heads Excel标题
 	 * @param props head 标题对应的map中的key值，注意Heads 和 props 列表属性需要一一对应
 	 * @param defaultValue 如果map中没有取到heads对应值，则使用默认值
-	 * @param <T>  任意类型的对象
+	 * @param <T> 任意类型的对象
 	 * @return ExcelResult 结果对象
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props,
-			String defaultValue) {
-		return toResult(listMap, heads, props, defaultValue, "sheet");
+			String defaultValue, DictionaryConverter... converters) {
+		return toResult(listMap, heads, props, defaultValue, "sheet", converters);
 	}
 
 	/**
@@ -297,8 +319,8 @@ public class ExcelResultUtils {
 	 * @param <T> 任意类型对象
 	 * @return ExcelResult Excel结果集
 	 */
-	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, Map<String, String> headToProp,
-			String defaultValue, String sheetName) {
+	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, Map<String, String> headToProp, String defaultValue,
+			String sheetName, DictionaryConverter... converters) {
 		if (headToProp == null || headToProp.isEmpty()) {
 			throw new IllegalArgumentException("headToProp must not be null!");
 		}
@@ -308,7 +330,7 @@ public class ExcelResultUtils {
 			heads.add(key);
 			porps.add(headToProp.get(key));
 		}
-		return toResult(listMap, heads, porps, defaultValue, sheetName);
+		return toResult(listMap, heads, porps, defaultValue, sheetName, converters);
 	}
 
 	/**
@@ -324,7 +346,7 @@ public class ExcelResultUtils {
 	 * @return ExcelResult对象
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props,
-			String defaultValue, String sheetName) {
+			String defaultValue, String sheetName, DictionaryConverter... converters) {
 		if (listMap == null || listMap.size() == 0) {
 			return null;
 		}
@@ -342,8 +364,9 @@ public class ExcelResultUtils {
 			Map<String, ?> map = listMap.get(i);
 			ExcelRow row = new ExcelRow(i + 1);
 			for (int j = 0; j < props.size(); j++) {
-				Object obj = map.get(props.get(j));
-				row.addCell(obj == null ? defaultValue : obj.toString());
+				String propName = props.get(j);
+				String value = ConverterUtils.converter(propName, j, MapUtils.getString(map, propName), converters);
+				row.addCell(value == null ? defaultValue : value.toString());
 			}
 			sheet.addRow(row);
 		}

@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.aimilin.converter.DictionaryConverter;
+import com.aimilin.utils.BeanUtils;
 import com.aimilin.utils.ExcelResultUtils;
 
 /**
@@ -62,19 +64,31 @@ public class ExcelResult {
 		return ExcelResultUtils.toList(this, sheetName);
 	}
 
-	public List<Map<String, String>> toMap() {
-		return ExcelResultUtils.toMap(this);
+	public List<Map<String, String>> toMap(DictionaryConverter... converters) {
+		return ExcelResultUtils.toMap(this, converters);
 	}
 
-	public List<Map<String, String>> toMap(int sheetIndex) {
-		return ExcelResultUtils.toMap(this, sheetIndex);
+	public List<Map<String, String>> toMap(int sheetIndex, DictionaryConverter... converters) {
+		return ExcelResultUtils.toMap(this, sheetIndex, converters);
 	}
 
-	public List<Map<String, String>> toMap(String sheetName) {
-		return ExcelResultUtils.toMap(this, sheetName);
+	public List<Map<String, String>> toMap(String sheetName, DictionaryConverter... converters) {
+		return ExcelResultUtils.toMap(this, sheetName, converters);
 	}
-	
-	public List<String> getHeads(int sheetIndex){
+
+	public <T> List<T> toBean(Class<T> clazz, String sheetName, DictionaryConverter... converters) {
+		return BeanUtils.toBean(this, clazz, sheetName, converters);
+	}
+
+	public <T> List<T> toBean(Class<T> clazz, int sheetIndex, DictionaryConverter... converters) {
+		return BeanUtils.toBean(this, clazz, sheetIndex, converters);
+	}
+
+	public <T> List<T> toBean(Class<T> clazz, DictionaryConverter... converters) {
+		return BeanUtils.toBean(this, clazz, converters);
+	}
+
+	public List<String> getHeads(int sheetIndex) {
 		return sheetList.get(sheetIndex).getHeads();
 	}
 

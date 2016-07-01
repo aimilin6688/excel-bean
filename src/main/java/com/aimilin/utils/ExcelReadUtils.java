@@ -60,14 +60,14 @@ public class ExcelReadUtils {
 			break;
 		case Cell.CELL_TYPE_FORMULA:
 			try {
-				//先按照字符串格式获取
+				// 先按照字符串格式获取
 				value = String.valueOf(cell.getStringCellValue());
 			} catch (Exception e) {
 				try {
-					//获取数字类型的结果
+					// 获取数字类型的结果
 					value = String.valueOf(cell.getNumericCellValue());
 				} catch (Exception e1) {
-					//获取公式
+					// 获取公式
 					value = cell.getCellFormula();
 				}
 			}
