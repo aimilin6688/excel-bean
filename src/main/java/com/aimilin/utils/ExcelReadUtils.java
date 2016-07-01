@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +50,7 @@ public class ExcelReadUtils {
 			if (DateUtil.isCellDateFormatted(cell)) {
 				value = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cell.getDateCellValue());
 			} else {
-				value = String.valueOf(cell.getNumericCellValue());
+				value = new BigDecimal(cell.getNumericCellValue()).toPlainString();
 				if (value.endsWith(".0")) {
 					value = value.substring(0, value.length() - ".0".length());
 				}
