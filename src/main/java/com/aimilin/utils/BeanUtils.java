@@ -301,11 +301,16 @@ public class BeanUtils {
 			return null;
 		}
 
+		Field[] fields = clazz.getDeclaredFields();// 根据Class对象获得属性 私有的也可以获得
+		T obj;
 		try {
-			Field[] fields = clazz.getDeclaredFields();// 根据Class对象获得属性 私有的也可以获得
-			T obj = clazz.getConstructor().newInstance();
-			String[] keys = map.keySet().toArray(new String[0]);
-			for (Field field : fields) {
+			obj = clazz.getConstructor().newInstance();
+		} catch (Exception e1) {
+			throw new ConversionException("生成javaBean失败！", e1);
+		}
+		String[] keys = map.keySet().toArray(new String[0]);
+		for (Field field : fields) {
+			try {
 				Row rowField = field.getAnnotation(Row.class);
 				String name = field.getName();
 				if (rowField != null) {
@@ -324,17 +329,16 @@ public class BeanUtils {
 				value = getDictionaryValue(rowField, value, true);
 				value = ConverterUtils.converter(field.getName(), rowField.index(), value, converters);
 				org.apache.commons.beanutils.BeanUtils.setProperty(obj, field.getName(), value);
-			}
-			return obj;
-		} catch (Exception e) {
-			if (ignoreException) {
-				log.warn(e.getMessage(), e);
-				return null;
-			} else {
-				log.error(e.getMessage(), e);
-				throw new ConversionException("生成javaBean失败！", e);
+			} catch (Exception e) {
+				if (ignoreException) {
+					log.warn(e.getMessage(), e);
+				} else {
+					log.error(e.getMessage(), e);
+					throw new ConversionException("生成javaBean失败！", e);
+				}
 			}
 		}
+		return obj;
 	}
 
 	/**
