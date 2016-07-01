@@ -5,6 +5,15 @@
 
 - excel-bean 主要功能是javabean与Excel数据行之间的互相转换，普通项目中都会有Excel的导入导出功能，使用该工具可以大大提高工作效率，使开发者不必关系复杂的Excel解析。
 
+##Maven方式使用
+```xml
+		<dependency>
+			<groupId>com.aimilin</groupId>
+			<artifactId>excel-bean</artifactId>
+			<version>0.0.1-beta3</version>
+		</dependency>
+```
+
 ##使用说明
 
 - 有如图Excel表格
