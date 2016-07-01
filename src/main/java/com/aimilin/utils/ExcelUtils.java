@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import com.aimilin.bean.ExcelResult;
 import com.aimilin.bean.ExcelType;
+import com.aimilin.converter.DictionaryConverter;
 import com.aimilin.exception.ExcelReadException;
 import com.aimilin.exception.ExcelWriteException;
 
@@ -76,7 +77,8 @@ public class ExcelUtils {
 	 * @param includeBlankLine 是否包含空行 true - 包含，false - 忽略空行
 	 * @return ExcelResult
 	 */
-	public static ExcelResult read(byte[] bytes, boolean includeHeader, boolean includeBlankLine) {
+	public static ExcelResult read(byte[] bytes, boolean includeHeader, boolean includeBlankLine,
+			DictionaryConverter... converters) {
 		return ExcelReadUtils.read(bytes, includeHeader, includeBlankLine);
 	}
 
@@ -99,12 +101,27 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param bytes Excel 文件二进制数组
 	 * @param clazz JavaBean对象，注意该对象可以使用
-	 * @param sheetIndex 开始为0
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read(byte[] bytes, Class<T> clazz, int sheetIndex) {
-		return read2Bean(bytes, clazz, sheetIndex);
+	public static <T> List<T> read(byte[] bytes, Class<T> clazz, DictionaryConverter... converters) {
+		return read2Bean(bytes, clazz, converters);
+	}
+
+	/**
+	 * 读取Excel数据到JavaBean对象中
+	 * 
+	 * @author LiuJunGuang
+	 * @param bytes Excel 文件二进制数组
+	 * @param clazz JavaBean对象，注意该对象可以使用
+	 * @param sheetIndex 开始为0
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
+	 * @return List 对象列表
+	 */
+	public static <T> List<T> read(byte[] bytes, Class<T> clazz, int sheetIndex, DictionaryConverter... converters) {
+		return read2Bean(bytes, clazz, sheetIndex, converters);
 	}
 
 	/**
@@ -114,11 +131,12 @@ public class ExcelUtils {
 	 * @param bytes Excel 文件二进制数组
 	 * @param clazz JavaBean对象，注意该对象可以使用
 	 * @param sheetName Excel sheet 名称
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read(byte[] bytes, Class<T> clazz, String sheetName) {
-		return read2Bean(bytes, clazz, sheetName);
+	public static <T> List<T> read(byte[] bytes, Class<T> clazz, String sheetName, DictionaryConverter... converters) {
+		return read2Bean(bytes, clazz, sheetName, converters);
 	}
 
 	/**
@@ -164,7 +182,7 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param is Excel 文件输入流
 	 * @param clazz JavaBean对象，注意该对象可以使用
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
 	 * @return List 对象列表
 	 */
 	public static <T> List<T> read(InputStream is, Class<T> clazz) {
@@ -177,12 +195,27 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param is Excel 文件输入流
 	 * @param clazz JavaBean对象，注意该对象可以使用
-	 * @param sheetIndex 开始为0
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read(InputStream is, Class<T> clazz, int sheetIndex) {
-		return read2Bean(is, clazz, sheetIndex);
+	public static <T> List<T> read(InputStream is, Class<T> clazz, DictionaryConverter... converters) {
+		return read2Bean(is, clazz, converters);
+	}
+
+	/**
+	 * 读取Excel数据到JavaBean对象中
+	 * 
+	 * @author LiuJunGuang
+	 * @param is Excel 文件输入流
+	 * @param clazz JavaBean对象，注意该对象可以使用
+	 * @param sheetIndex 开始为0
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
+	 * @return List 对象列表
+	 */
+	public static <T> List<T> read(InputStream is, Class<T> clazz, int sheetIndex, DictionaryConverter... converters) {
+		return read2Bean(is, clazz, sheetIndex, converters);
 	}
 
 	/**
@@ -192,11 +225,12 @@ public class ExcelUtils {
 	 * @param is Excel 文件输入流
 	 * @param clazz JavaBean对象，注意该对象可以使用
 	 * @param sheetName Excel sheet 名称，只匹配指定名称的Sheet
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read(InputStream is, Class<T> clazz, String sheetName) {
-		return read2Bean(is, clazz, sheetName);
+	public static <T> List<T> read(InputStream is, Class<T> clazz, String sheetName, DictionaryConverter... converters) {
+		return read2Bean(is, clazz, sheetName, converters);
 	}
 
 	/**
@@ -243,7 +277,7 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param filePath 文件路径
 	 * @param clazz JavaBean对象，注意该对象可以使用
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
 	 * @return List 对象列表
 	 */
 	public static <T> List<T> read(String filePath, Class<T> clazz) {
@@ -256,12 +290,12 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param filePath 文件路径
 	 * @param clazz JavaBean对象，注意该对象可以使用
-	 * @param sheetIndex 开始为0
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read(String filePath, Class<T> clazz, int sheetIndex) {
-		return read2Bean(filePath, clazz, sheetIndex);
+	public static <T> List<T> read(String filePath, Class<T> clazz, DictionaryConverter... converters) {
+		return read2Bean(filePath, clazz, converters);
 	}
 
 	/**
@@ -270,12 +304,28 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param filePath 文件路径
 	 * @param clazz JavaBean对象，注意该对象可以使用
-	 * @param sheetName  Excel sheet 名称，只匹配指定名称的Sheet
-     * @param <T> 任意类型对象
+	 * @param sheetIndex 开始为0
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read(String filePath, Class<T> clazz, String sheetName) {
-		return read2Bean(filePath, clazz, sheetName);
+	public static <T> List<T> read(String filePath, Class<T> clazz, int sheetIndex, DictionaryConverter... converters) {
+		return read2Bean(filePath, clazz, sheetIndex, converters);
+	}
+
+	/**
+	 * 读取Excel数据到JavaBean对象中
+	 * 
+	 * @author LiuJunGuang
+	 * @param filePath 文件路径
+	 * @param clazz JavaBean对象，注意该对象可以使用
+	 * @param sheetName Excel sheet 名称，只匹配指定名称的Sheet
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
+	 * @return List 对象列表
+	 */
+	public static <T> List<T> read(String filePath, Class<T> clazz, String sheetName, DictionaryConverter... converters) {
+		return read2Bean(filePath, clazz, sheetName, converters);
 	}
 
 	/**
@@ -284,12 +334,13 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param bytes Excel 文件二进制数组
 	 * @param clazz JavaBean对象，注意该对象可以使用
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read2Bean(byte[] bytes, Class<T> clazz) {
+	public static <T> List<T> read2Bean(byte[] bytes, Class<T> clazz, DictionaryConverter... converters) {
 		ExcelResult result = read(bytes);
-		return BeanUtils.toBean(result, clazz);
+		return BeanUtils.toBean(result, clazz, converters);
 	}
 
 	/**
@@ -299,12 +350,13 @@ public class ExcelUtils {
 	 * @param bytes Excel 文件二进制数组
 	 * @param clazz JavaBean对象，注意该对象可以使用
 	 * @param sheetIndex 开始为0
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read2Bean(byte[] bytes, Class<T> clazz, int sheetIndex) {
+	public static <T> List<T> read2Bean(byte[] bytes, Class<T> clazz, int sheetIndex, DictionaryConverter... converters) {
 		ExcelResult result = read(bytes);
-		return BeanUtils.toBean(result, clazz, sheetIndex);
+		return BeanUtils.toBean(result, clazz, sheetIndex, converters);
 	}
 
 	/**
@@ -313,13 +365,14 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param bytes Excel 文件二进制数组
 	 * @param clazz JavaBean对象，注意该对象可以使用
-	 * @param sheetName  Excel sheet 名称，只匹配指定名称的Sheet
-     * @param <T> 任意类型对象
+	 * @param sheetName Excel sheet 名称，只匹配指定名称的Sheet
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read2Bean(byte[] bytes, Class<T> clazz, String sheetName) {
+	public static <T> List<T> read2Bean(byte[] bytes, Class<T> clazz, String sheetName, DictionaryConverter... converters) {
 		ExcelResult result = read(bytes);
-		return BeanUtils.toBean(result, clazz, sheetName);
+		return BeanUtils.toBean(result, clazz, sheetName, converters);
 	}
 
 	/**
@@ -328,12 +381,13 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param is Excel 文件输入流
 	 * @param clazz JavaBean对象，注意该对象可以使用
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read2Bean(InputStream is, Class<T> clazz) {
+	public static <T> List<T> read2Bean(InputStream is, Class<T> clazz, DictionaryConverter... converters) {
 		ExcelResult result = read(is);
-		return BeanUtils.toBean(result, clazz);
+		return BeanUtils.toBean(result, clazz, converters);
 	}
 
 	/**
@@ -343,12 +397,13 @@ public class ExcelUtils {
 	 * @param is Excel 文件输入流
 	 * @param clazz JavaBean对象，注意该对象可以使用
 	 * @param sheetIndex 开始为0
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read2Bean(InputStream is, Class<T> clazz, int sheetIndex) {
+	public static <T> List<T> read2Bean(InputStream is, Class<T> clazz, int sheetIndex, DictionaryConverter... converters) {
 		ExcelResult result = read(is);
-		return BeanUtils.toBean(result, clazz, sheetIndex);
+		return BeanUtils.toBean(result, clazz, sheetIndex, converters);
 	}
 
 	/**
@@ -357,13 +412,14 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param is Excel 文件输入流
 	 * @param clazz JavaBean对象，注意该对象可以使用
-	 * @param sheetName  Excel sheet 名称，只匹配指定名称的Sheet
-     * @param <T> 任意类型对象
+	 * @param sheetName Excel sheet 名称，只匹配指定名称的Sheet
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read2Bean(InputStream is, Class<T> clazz, String sheetName) {
+	public static <T> List<T> read2Bean(InputStream is, Class<T> clazz, String sheetName, DictionaryConverter... converters) {
 		ExcelResult result = read(is);
-		return BeanUtils.toBean(result, clazz, sheetName);
+		return BeanUtils.toBean(result, clazz, sheetName, converters);
 	}
 
 	/**
@@ -372,12 +428,13 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param filePath 文件路径
 	 * @param clazz JavaBean对象，注意该对象可以使用
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read2Bean(String filePath, Class<T> clazz) {
+	public static <T> List<T> read2Bean(String filePath, Class<T> clazz, DictionaryConverter... converters) {
 		ExcelResult result = read(filePath);
-		return BeanUtils.toBean(result, clazz);
+		return BeanUtils.toBean(result, clazz, converters);
 	}
 
 	/**
@@ -387,12 +444,13 @@ public class ExcelUtils {
 	 * @param filePath 文件路径
 	 * @param clazz JavaBean对象，注意该对象可以使用
 	 * @param sheetIndex 开始为0
-     * @param <T> 任意类型对象
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read2Bean(String filePath, Class<T> clazz, int sheetIndex) {
+	public static <T> List<T> read2Bean(String filePath, Class<T> clazz, int sheetIndex, DictionaryConverter... converters) {
 		ExcelResult result = read(filePath);
-		return BeanUtils.toBean(result, clazz, sheetIndex);
+		return BeanUtils.toBean(result, clazz, sheetIndex, converters);
 	}
 
 	/**
@@ -401,13 +459,14 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param filePath 文件路径
 	 * @param clazz JavaBean对象，注意该对象可以使用
-	 * @param sheetName  Excel sheet 名称，只匹配指定名称的Sheet
-     * @param <T> 任意类型对象
+	 * @param sheetName Excel sheet 名称，只匹配指定名称的Sheet
+	 * @param <T> 任意类型对象
+	 * @param converters 可选，参数类型转换器
 	 * @return List 对象列表
 	 */
-	public static <T> List<T> read2Bean(String filePath, Class<T> clazz, String sheetName) {
+	public static <T> List<T> read2Bean(String filePath, Class<T> clazz, String sheetName, DictionaryConverter... converters) {
 		ExcelResult result = read(filePath);
-		return BeanUtils.toBean(result, clazz, sheetName);
+		return BeanUtils.toBean(result, clazz, sheetName, converters);
 	}
 
 	/**
@@ -442,7 +501,7 @@ public class ExcelUtils {
 	 * @param includeHeader 是否包含第一行标题头，true - 包含第一行标题，false - 不包含第一行标题
 	 * @param includeBlankLine 是否包含空行 true - 包含，false - 忽略空行
 	 * @return 数据结果集，如果为空则返回null
-     * @throws ExcelReadException 文件读取错误
+	 * @throws ExcelReadException 文件读取错误
 	 */
 	public static List<List<String>> read2List(byte[] bytes, boolean includeHeader, boolean includeBlankLine) {
 		ExcelResult result = read(bytes, includeHeader, includeBlankLine);
@@ -556,6 +615,25 @@ public class ExcelUtils {
 	 * <li>Map key-标题，value 值，默认第一行为标题</li>
 	 * </ul>
 	 * 
+	 * @param bytes Excel 文件二进制数组
+	 * @param converters 可选，参数类型转换器
+	 * @return 去除第一行之后的数据列表，如果为空则返回null
+	 * @throws ExcelReadException 文件读取错误
+	 */
+	public static List<Map<String, String>> read2Map(byte[] bytes, DictionaryConverter... converters) {
+		ExcelResult result = read(bytes, true, false);
+		return result == null ? null : result.toMap(converters);
+	}
+
+	/**
+	 * 读取Excel数据到Map列表中，支持2003和2007格式读取，默认第一行为标题行，返回数据不包含第一行.<br>
+	 * <b>注意：</b>
+	 * <ul>
+	 * <li>如果Excel单元格无内容，或者读取单元格失败则默认为空字符串
+	 * <li>
+	 * <li>Map key-标题，value 值，默认第一行为标题</li>
+	 * </ul>
+	 * 
 	 * @param is Excel 文件输入流
 	 * @return 去除第一行之后的数据列表，如果为空则返回null
 	 * @throws ExcelReadException 文件读取错误
@@ -574,6 +652,25 @@ public class ExcelUtils {
 	 * <li>Map key-标题，value 值，默认第一行为标题</li>
 	 * </ul>
 	 * 
+	 * @param is Excel 文件输入流
+	 * @param converters 可选，参数类型转换器
+	 * @return 去除第一行之后的数据列表，如果为空则返回null
+	 * @throws ExcelReadException 文件读取错误
+	 */
+	public static List<Map<String, String>> read2Map(InputStream is, DictionaryConverter... converters) {
+		ExcelResult result = read(is, true, false);
+		return result == null ? null : result.toMap(converters);
+	}
+
+	/**
+	 * 读取Excel数据到Map列表中，支持2003和2007格式读取，默认第一行为标题行，返回数据不包含第一行.<br>
+	 * <b>注意：</b>
+	 * <ul>
+	 * <li>如果Excel单元格无内容，或者读取单元格失败则默认为空字符串
+	 * <li>
+	 * <li>Map key-标题，value 值，默认第一行为标题</li>
+	 * </ul>
+	 * 
 	 * @param filePath Excel 文件路径
 	 * @return 去除第一行之后的数据列表，如果为空则返回null
 	 * @throws ExcelReadException 文件读取错误
@@ -581,6 +678,25 @@ public class ExcelUtils {
 	public static List<Map<String, String>> read2Map(String filePath) {
 		ExcelResult result = read(filePath, true, false);
 		return result == null ? null : result.toMap();
+	}
+
+	/**
+	 * 读取Excel数据到Map列表中，支持2003和2007格式读取，默认第一行为标题行，返回数据不包含第一行.<br>
+	 * <b>注意：</b>
+	 * <ul>
+	 * <li>如果Excel单元格无内容，或者读取单元格失败则默认为空字符串
+	 * <li>
+	 * <li>Map key-标题，value 值，默认第一行为标题</li>
+	 * </ul>
+	 * 
+	 * @param filePath Excel 文件路径
+	 * @param converters 可选，参数类型转换器
+	 * @return 去除第一行之后的数据列表，如果为空则返回null
+	 * @throws ExcelReadException 文件读取错误
+	 */
+	public static List<Map<String, String>> read2Map(String filePath, DictionaryConverter... converters) {
+		ExcelResult result = read(filePath, true, false);
+		return result == null ? null : result.toMap(converters);
 	}
 
 	/**
@@ -692,16 +808,30 @@ public class ExcelUtils {
 	}
 
 	/**
+	 * 将对象列表写入到Excel字节流中，默认使用Excel2007格式。直接忽略异常信息
+	 * 
+	 * @author LiuJunGuang
+	 * @param list 对象列表
+	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
+	 * @return Excel 字节流
+	 */
+	public static <T> byte[] write(List<T> list, DictionaryConverter... converters) {
+		return write(list, ExcelType.XLSX, true, converters);
+	}
+
+	/**
 	 * 将对象列表写入到指定Excel类型字节流中，直接忽略异常信息
 	 * 
 	 * @author LiuJunGuang
 	 * @param list 对象列表
 	 * @param excelType Excel文件类型
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return Excel 字节流
 	 */
-	public static <T> byte[] write(List<T> list, ExcelType excelType) {
-		return write(list, excelType, true);
+	public static <T> byte[] write(List<T> list, ExcelType excelType, DictionaryConverter... converters) {
+		return write(list, excelType, true, converters);
 	}
 
 	/**
@@ -712,10 +842,12 @@ public class ExcelUtils {
 	 * @param excelType Excel文件类型
 	 * @param ignoreException true 忽略转换异常，false 抛出异常
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return Excel 文件字节流
 	 */
-	public static <T> byte[] write(List<T> list, ExcelType excelType, boolean ignoreException) {
-		ExcelResult excelResult = BeanUtils.toResult(list, ignoreException);
+	public static <T> byte[] write(List<T> list, ExcelType excelType, boolean ignoreException,
+			DictionaryConverter... converters) {
+		ExcelResult excelResult = BeanUtils.toResult(list, ignoreException, converters);
 		return write(excelResult, excelType);
 	}
 
@@ -726,9 +858,10 @@ public class ExcelUtils {
 	 * @param list 对象列表
 	 * @param os 输出流
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 */
-	public static <T> void write(List<T> list, OutputStream os) {
-		write(list, os, ExcelType.XLSX, true);
+	public static <T> void write(List<T> list, OutputStream os, DictionaryConverter... converters) {
+		write(list, os, ExcelType.XLSX, true, converters);
 	}
 
 	/**
@@ -739,9 +872,10 @@ public class ExcelUtils {
 	 * @param os 输出流
 	 * @param excelType 指定输出的Excel格式
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 */
-	public static <T> void write(List<T> list, OutputStream os, ExcelType excelType) {
-		write(list, os, excelType, true);
+	public static <T> void write(List<T> list, OutputStream os, ExcelType excelType, DictionaryConverter... converters) {
+		write(list, os, excelType, true, converters);
 	}
 
 	/**
@@ -752,10 +886,12 @@ public class ExcelUtils {
 	 * @param os 输出流
 	 * @param excelType Excel文件类型
 	 * @param ignoreException true 忽略转换异常，false 抛出转换异常
-     * @param <T> 任意对象类型
+	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 */
-	public static <T> void write(List<T> list, OutputStream os, ExcelType excelType, boolean ignoreException) {
-		ExcelResult excelResult = BeanUtils.toResult(list, ignoreException);
+	public static <T> void write(List<T> list, OutputStream os, ExcelType excelType, boolean ignoreException,
+			DictionaryConverter... converters) {
+		ExcelResult excelResult = BeanUtils.toResult(list, ignoreException, converters);
 		write(excelResult, os, excelType);
 	}
 
@@ -765,11 +901,12 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param list 对象列表
 	 * @param filePath 输出文件路径
-     * @param <T> 任意对象类型
-     * @return 文件全名
+	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
+	 * @return 文件全名
 	 */
-	public static <T> String write(List<T> list, String filePath) {
-		return write(list, filePath, ExcelType.XLSX, true, true);
+	public static <T> String write(List<T> list, String filePath, DictionaryConverter... converters) {
+		return write(list, filePath, ExcelType.XLSX, true, true, converters);
 	}
 
 	/**
@@ -780,10 +917,11 @@ public class ExcelUtils {
 	 * @param filePath 输出文件路径
 	 * @param excelType Excel文件格式
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全名
 	 */
-	public static <T> String write(List<T> list, String filePath, ExcelType excelType) {
-		return write(list, filePath, excelType, true, true);
+	public static <T> String write(List<T> list, String filePath, ExcelType excelType, DictionaryConverter... converters) {
+		return write(list, filePath, excelType, true, true, converters);
 	}
 
 	/**
@@ -795,10 +933,12 @@ public class ExcelUtils {
 	 * @param excelType Excel文件格式
 	 * @param createFileName true 自动创建文件名称，false - 路径中指定文件名称和后缀
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全名称
 	 */
-	public static <T> String write(List<T> list, String filePath, ExcelType excelType, boolean createFileName) {
-		return write(list, filePath, excelType, createFileName, true);
+	public static <T> String write(List<T> list, String filePath, ExcelType excelType, boolean createFileName,
+			DictionaryConverter... converters) {
+		return write(list, filePath, excelType, createFileName, true, converters);
 	}
 
 	/**
@@ -811,11 +951,12 @@ public class ExcelUtils {
 	 * @param createFileName 是否创建文件名称，true - 自动创建文件名称，false 路径中指定文件名称
 	 * @param ignoreException true - 忽略转换异常信息，false - 抛出转换异常信息
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全名称
 	 */
 	public static <T> String write(List<T> list, String filePath, ExcelType excelType, boolean createFileName,
-			boolean ignoreException) {
-		ExcelResult excelResult = BeanUtils.toResult(list, ignoreException);
+			boolean ignoreException, DictionaryConverter... converters) {
+		ExcelResult excelResult = BeanUtils.toResult(list, ignoreException, converters);
 		return write(excelResult, filePath, excelType, createFileName);
 	}
 
@@ -879,8 +1020,7 @@ public class ExcelUtils {
 	 * @param excelType Excel类型
 	 * @return 字节数组
 	 */
-	public static byte[] write4List(List<List<String>> dataList, List<String> heads, String sheetName,
-			ExcelType excelType) {
+	public static byte[] write4List(List<List<String>> dataList, List<String> heads, String sheetName, ExcelType excelType) {
 		ExcelResult excelResult = ExcelResultUtils.toResult(dataList, sheetName, heads);
 		return write(excelResult, excelType);
 	}
@@ -924,8 +1064,7 @@ public class ExcelUtils {
 	 * @param filePath 文件路径
 	 * @return 文件全路径
 	 */
-	public static String write4List(List<List<String>> dataList, List<String> heads, String sheetName,
-			String filePath) {
+	public static String write4List(List<List<String>> dataList, List<String> heads, String sheetName, String filePath) {
 		return write4List(dataList, heads, sheetName, filePath, ExcelType.XLSX);
 	}
 
@@ -1000,6 +1139,20 @@ public class ExcelUtils {
 	}
 
 	/**
+	 * 将数据列表转换成Excel字节数组，默认为Excel2007格式，并且Map中的属性名称和heads一一对应
+	 * 
+	 * @author LiuJunGuang
+	 * @param mapList 数据列表
+	 * @param heads Excel标题，Map中的Key和Heads一一对应
+	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
+	 * @return Excel字节数组
+	 */
+	public static <T> byte[] write4Map(List<Map<String, T>> mapList, List<String> heads, DictionaryConverter... converters) {
+		return write4Map(mapList, heads, heads, converters);
+	}
+
+	/**
 	 * 将数据列表转换成Excel字节数组，默认为Excel2007格式
 	 * 
 	 * @author LiuJunGuang
@@ -1014,6 +1167,22 @@ public class ExcelUtils {
 	}
 
 	/**
+	 * 将数据列表转换成Excel字节数组，默认为Excel2007格式
+	 * 
+	 * @author LiuJunGuang
+	 * @param mapList 数据列表
+	 * @param heads Excel标题
+	 * @param props Map中属性名称和Heads中的对应关系，要求和heads中的属性顺序对应
+	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
+	 * @return Excel字节数组
+	 */
+	public static <T> byte[] write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
+			DictionaryConverter... converters) {
+		return write4Map(mapList, heads, props, "sheet", "", ExcelType.XLSX, converters);
+	}
+
+	/**
 	 * 将数据列表转换成Excel输出流，默认为Excel2007格式
 	 * 
 	 * @author LiuJunGuang
@@ -1021,11 +1190,12 @@ public class ExcelUtils {
 	 * @param heads Excel标题
 	 * @param props Map中属性名称和Heads中的对应关系，要求和heads中的属性顺序对应
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @param os Excel输出流
 	 */
-	public static <T> void write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
-			OutputStream os) {
-		write4Map(mapList, heads, props, "sheet", os);
+	public static <T> void write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props, OutputStream os,
+			DictionaryConverter... converters) {
+		write4Map(mapList, heads, props, "sheet", os, converters);
 	}
 
 	/**
@@ -1037,11 +1207,12 @@ public class ExcelUtils {
 	 * @param props Map中属性名称和Heads中的对应关系，要求和heads中的属性顺序对应
 	 * @param filePath Excel文件路径，文件名称和格式会自动生成
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全名称
 	 */
-	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
-			String filePath) {
-		return write4Map(mapList, heads, props, "sheet", filePath);
+	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props, String filePath,
+			DictionaryConverter... converters) {
+		return write4Map(mapList, heads, props, "sheet", filePath, converters);
 	}
 
 	/**
@@ -1053,11 +1224,12 @@ public class ExcelUtils {
 	 * @param props Map中属性名称和Heads中的对应关系，要求和heads中的属性顺序对应
 	 * @param sheetName Sheet名称
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @param os Excel文件输出流
 	 */
-	public static <T> void write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
-			String sheetName, OutputStream os) {
-		write4Map(mapList, heads, props, sheetName, "", os);
+	public static <T> void write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props, String sheetName,
+			OutputStream os, DictionaryConverter... converters) {
+		write4Map(mapList, heads, props, sheetName, "", os, converters);
 	}
 
 	/**
@@ -1070,11 +1242,12 @@ public class ExcelUtils {
 	 * @param sheetName sheet名称
 	 * @param filePath 文件路径，文件名称和格式会自动生成
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全路径
 	 */
-	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
-			String sheetName, String filePath) {
-		return write4Map(mapList, heads, props, sheetName, "", filePath);
+	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props, String sheetName,
+			String filePath, DictionaryConverter... converters) {
+		return write4Map(mapList, heads, props, sheetName, "", filePath, converters);
 	}
 
 	/**
@@ -1088,11 +1261,12 @@ public class ExcelUtils {
 	 * @param defaultValue 默认值，如果Map中没有取到值则使用默认值
 	 * @param excelType Excel类型
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return Excel字节数组
 	 */
-	public static <T> byte[] write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
-			String sheetName, String defaultValue, ExcelType excelType) {
-		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, heads, props, defaultValue, sheetName);
+	public static <T> byte[] write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props, String sheetName,
+			String defaultValue, ExcelType excelType, DictionaryConverter... converters) {
+		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, heads, props, defaultValue, sheetName, converters);
 		return write(excelResult, excelType);
 	}
 
@@ -1106,11 +1280,12 @@ public class ExcelUtils {
 	 * @param sheetName sheet名称
 	 * @param defaultValue 默认值，如果Map中没有取到值则使用默认值
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @param os Excel输出流
 	 */
-	public static <T> void write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
-			String sheetName, String defaultValue, OutputStream os) {
-		write4Map(mapList, heads, props, sheetName, defaultValue, os, ExcelType.XLSX);
+	public static <T> void write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props, String sheetName,
+			String defaultValue, OutputStream os, DictionaryConverter... converters) {
+		write4Map(mapList, heads, props, sheetName, defaultValue, os, ExcelType.XLSX, converters);
 	}
 
 	/**
@@ -1124,11 +1299,12 @@ public class ExcelUtils {
 	 * @param defaultValue 默认值，如果Map中没有取到值则使用默认值
 	 * @param os Excel输出流
 	 * @param excelType Excel格式
+	 * @param converters 可选，参数类型转换器
 	 * @param <T> 任意对象类型
 	 */
-	public static <T> void write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
-			String sheetName, String defaultValue, OutputStream os, ExcelType excelType) {
-		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, heads, props, defaultValue, sheetName);
+	public static <T> void write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props, String sheetName,
+			String defaultValue, OutputStream os, ExcelType excelType, DictionaryConverter... converters) {
+		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, heads, props, defaultValue, sheetName, converters);
 		write(excelResult, os, excelType);
 	}
 
@@ -1142,12 +1318,13 @@ public class ExcelUtils {
 	 * @param sheetName sheet名称
 	 * @param defaultValue 默认值，如果Map中没有取到值则使用默认值
 	 * @param filePath 文件路径，不包含文件名称
-	 * @param <T> 任意对象类型  
+	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全路径
 	 */
-	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
-			String sheetName, String defaultValue, String filePath) {
-		return write4Map(mapList, heads, props, sheetName, defaultValue, filePath, ExcelType.XLSX);
+	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props, String sheetName,
+			String defaultValue, String filePath, DictionaryConverter... converters) {
+		return write4Map(mapList, heads, props, sheetName, defaultValue, filePath, ExcelType.XLSX, converters);
 	}
 
 	/**
@@ -1162,11 +1339,12 @@ public class ExcelUtils {
 	 * @param filePath 文件路径，不能包含文件名称
 	 * @param excelType Excel文件格式
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全路径
 	 */
-	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
-			String sheetName, String defaultValue, String filePath, ExcelType excelType) {
-		return write4Map(mapList, heads, props, sheetName, defaultValue, filePath, excelType, true);
+	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props, String sheetName,
+			String defaultValue, String filePath, ExcelType excelType, DictionaryConverter... converters) {
+		return write4Map(mapList, heads, props, sheetName, defaultValue, filePath, excelType, true, converters);
 	}
 
 	/**
@@ -1182,11 +1360,13 @@ public class ExcelUtils {
 	 * @param excelType Excel文件路径
 	 * @param createFileName 是否创建文件名称 true - 自动创建文件名称，false - 路径中需要指定文件名称和格式
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全路径
 	 */
-	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props,
-			String sheetName, String defaultValue, String filePath, ExcelType excelType, boolean createFileName) {
-		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, heads, props, defaultValue, sheetName);
+	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, List<String> props, String sheetName,
+			String defaultValue, String filePath, ExcelType excelType, boolean createFileName,
+			DictionaryConverter... converters) {
+		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, heads, props, defaultValue, sheetName, converters);
 		return write(excelResult, filePath, excelType, createFileName);
 	}
 
@@ -1201,6 +1381,21 @@ public class ExcelUtils {
 	 */
 	public static <T> void write4Map(List<Map<String, T>> mapList, List<String> heads, OutputStream os) {
 		write4Map(mapList, heads, heads, "sheet", os);
+	}
+
+	/**
+	 * 将数据列表写入到Excel 输出流中，默认为Excel2007格式
+	 * 
+	 * @author LiuJunGuang
+	 * @param mapList 数据列表
+	 * @param heads Excel标题
+	 * @param os Excel输出流
+	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
+	 */
+	public static <T> void write4Map(List<Map<String, T>> mapList, List<String> heads, OutputStream os,
+			DictionaryConverter... converters) {
+		write4Map(mapList, heads, heads, "sheet", os, converters);
 	}
 
 	/**
@@ -1223,14 +1418,31 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param mapList 数据列表
 	 * @param heads Excel标题
+	 * @param filePath 文件路径
+	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
+	 * @return 文件全路径
+	 */
+	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, String filePath,
+			DictionaryConverter... converters) {
+		return write4Map(mapList, heads, heads, filePath, converters);
+	}
+
+	/**
+	 * 将数据列表写入到Excel 文件中，默认为Excel2007格式，文件名称和格式自动创建
+	 * 
+	 * @author LiuJunGuang
+	 * @param mapList 数据列表
+	 * @param heads Excel标题
 	 * @param sheetName sheet名称
 	 * @param filePath 文件路径
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全路径
 	 */
-	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, String sheetName,
-			String filePath) {
-		return write4Map(mapList, heads, heads, sheetName, filePath);
+	public static <T> String write4Map(List<Map<String, T>> mapList, List<String> heads, String sheetName, String filePath,
+			DictionaryConverter... converters) {
+		return write4Map(mapList, heads, heads, sheetName, filePath, converters);
 	}
 
 	/**
@@ -1245,11 +1457,12 @@ public class ExcelUtils {
 	 * @param excelType Excel文件类型
 	 * @param createFileName true- 自动创建文件名称，false 路径中指定文件名称
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全路径
 	 */
 	public static <T> String write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, String defaultValue,
-			String sheetName, String filePath, ExcelType excelType, boolean createFileName) {
-		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, head2Prop, defaultValue, sheetName);
+			String sheetName, String filePath, ExcelType excelType, boolean createFileName, DictionaryConverter... converters) {
+		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, head2Prop, defaultValue, sheetName, converters);
 		return write(excelResult, filePath, excelType, createFileName);
 	}
 
@@ -1264,11 +1477,12 @@ public class ExcelUtils {
 	 * @param filePath 文件路径
 	 * @param excelType Excel文件类型
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全路径
 	 */
 	public static <T> String write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, String defaultValue,
-			String sheetName, String filePath, ExcelType excelType) {
-		return write4Map(mapList, head2Prop, defaultValue, sheetName, filePath, excelType, true);
+			String sheetName, String filePath, ExcelType excelType, DictionaryConverter... converters) {
+		return write4Map(mapList, head2Prop, defaultValue, sheetName, filePath, excelType, true, converters);
 	}
 
 	/**
@@ -1281,11 +1495,12 @@ public class ExcelUtils {
 	 * @param sheetName sheet名称
 	 * @param filePath 文件路径
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全路径
 	 */
 	public static <T> String write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, String defaultValue,
-			String sheetName, String filePath) {
-		return write4Map(mapList, head2Prop, defaultValue, sheetName, filePath, ExcelType.XLSX, true);
+			String sheetName, String filePath, DictionaryConverter... converters) {
+		return write4Map(mapList, head2Prop, defaultValue, sheetName, filePath, ExcelType.XLSX, true, converters);
 	}
 
 	/**
@@ -1297,11 +1512,12 @@ public class ExcelUtils {
 	 * @param sheetName sheet名称
 	 * @param filePath 文件路径
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全路径
 	 */
 	public static <T> String write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, String sheetName,
-			String filePath) {
-		return write4Map(mapList, head2Prop, "", sheetName, filePath);
+			String filePath, DictionaryConverter... converters) {
+		return write4Map(mapList, head2Prop, "", sheetName, filePath, converters);
 	}
 
 	/**
@@ -1312,10 +1528,12 @@ public class ExcelUtils {
 	 * @param head2Prop Excel标题和Map中属性对应关系，key - Excel标题，value - Map属性名称
 	 * @param filePath 文件路径
 	 * @param <T> 任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return 文件全路径
 	 */
-	public static <T> String write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, String filePath) {
-		return write4Map(mapList, head2Prop, "", "sheet", filePath);
+	public static <T> String write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, String filePath,
+			DictionaryConverter... converters) {
+		return write4Map(mapList, head2Prop, "", "sheet", filePath, converters);
 	}
 
 	/**
@@ -1328,11 +1546,12 @@ public class ExcelUtils {
 	 * @param sheetName sheet名称
 	 * @param os 输出流
 	 * @param excelType Excel文件格式
+	 * @param converters 可选，参数类型转换器
 	 * @param <T> 任意对象类型
 	 */
 	public static <T> void write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, String defaultValue,
-			String sheetName, OutputStream os, ExcelType excelType) {
-		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, head2Prop, defaultValue, sheetName);
+			String sheetName, OutputStream os, ExcelType excelType, DictionaryConverter... converters) {
+		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, head2Prop, defaultValue, sheetName, converters);
 		write(excelResult, os, excelType);
 	}
 
@@ -1345,11 +1564,12 @@ public class ExcelUtils {
 	 * @param defaultValue 取不到值时默认值
 	 * @param sheetName sheet名称
 	 * @param os 输出流
+	 * @param converters 可选，参数类型转换器
 	 * @param <T> 任意对象类型
 	 */
 	public static <T> void write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, String defaultValue,
-			String sheetName, OutputStream os) {
-		write4Map(mapList, head2Prop, defaultValue, sheetName, os, ExcelType.XLSX);
+			String sheetName, OutputStream os, DictionaryConverter... converters) {
+		write4Map(mapList, head2Prop, defaultValue, sheetName, os, ExcelType.XLSX, converters);
 	}
 
 	/**
@@ -1360,11 +1580,12 @@ public class ExcelUtils {
 	 * @param head2Prop Excel标题和Map中属性对应关系，key - Excel标题，value - Map属性名称
 	 * @param sheetName sheet名称
 	 * @param os 输出流
+	 * @param converters 可选，参数类型转换器
 	 * @param <T> 任意对象类型
 	 */
 	public static <T> void write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, String sheetName,
-			OutputStream os) {
-		write4Map(mapList, head2Prop, "", sheetName, os);
+			OutputStream os, DictionaryConverter... converters) {
+		write4Map(mapList, head2Prop, "", sheetName, os, converters);
 	}
 
 	/**
@@ -1374,10 +1595,12 @@ public class ExcelUtils {
 	 * @param mapList 数据列表
 	 * @param head2Prop Excel标题和Map中属性对应关系，key - Excel标题，value - Map属性名称
 	 * @param os 输出流
+	 * @param converters 可选，参数类型转换器
 	 * @param <T> 任意对象类型
 	 */
-	public static <T> void write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, OutputStream os) {
-		write4Map(mapList, head2Prop, "", os);
+	public static <T> void write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, OutputStream os,
+			DictionaryConverter... converters) {
+		write4Map(mapList, head2Prop, "", os, converters);
 	}
 
 	/**
@@ -1389,12 +1612,13 @@ public class ExcelUtils {
 	 * @param defaultValue 取不到值时默认值
 	 * @param sheetName sheet名称
 	 * @param excelType Excel格式
+	 * @param converters 可选，参数类型转换器
 	 * @param <T> 任意对象类型
 	 * @return Excel文件字节数组
 	 */
 	public static <T> byte[] write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop, String defaultValue,
-			String sheetName, ExcelType excelType) {
-		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, head2Prop, defaultValue, sheetName);
+			String sheetName, ExcelType excelType, DictionaryConverter... converters) {
+		ExcelResult excelResult = ExcelResultUtils.toResult(mapList, head2Prop, defaultValue, sheetName, converters);
 		return write(excelResult, excelType);
 	}
 
@@ -1404,11 +1628,13 @@ public class ExcelUtils {
 	 * @author LiuJunGuang
 	 * @param mapList 数据列表
 	 * @param head2Prop Excel标题和Map中属性对应关系，key - Excel标题，value - Map属性名称
+	 * @param converters 可选，参数类型转换器
 	 * @param <T> 任意对象类型
 	 * @return 字节数组
 	 */
-	public static <T> byte[] write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop) {
-		return write4Map(mapList, head2Prop, "", "sheet", ExcelType.XLSX);
+	public static <T> byte[] write4Map(List<Map<String, T>> mapList, Map<String, String> head2Prop,
+			DictionaryConverter... converters) {
+		return write4Map(mapList, head2Prop, "", "sheet", ExcelType.XLSX, converters);
 	}
 
 }

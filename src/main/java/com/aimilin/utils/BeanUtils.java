@@ -26,7 +26,9 @@ import com.aimilin.annotation.Sheet;
 import com.aimilin.bean.ExcelResult;
 import com.aimilin.bean.ExcelRow;
 import com.aimilin.bean.ExcelSheet;
+import com.aimilin.converter.DictionaryConverter;
 import com.aimilin.converter.ExtConvertUtilsBean;
+import com.aimilin.exception.ConverterUtils;
 
 /**
  * Bean工具类
@@ -41,8 +43,8 @@ public class BeanUtils {
 	private static SqlDateConverter sqlDateConverter = new SqlDateConverter(null);
 	private static SqlTimeConverter sqlTimeConverter = new SqlTimeConverter(null);
 	static {
-		String[] patterns = { "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yy-MM-dd HH:mm:ss", "yyyy-MM-dd",
-				"MM/dd/yyyy", "HH:mm:ss" };
+		String[] patterns = { "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yy-MM-dd HH:mm:ss", "yyyy-MM-dd", "MM/dd/yyyy",
+				"HH:mm:ss" };
 		setPatterns(patterns);
 		BeanUtilsBean.setInstance(new BeanUtilsBean(new ExtConvertUtilsBean()));
 		ConvertUtils.register(calendarConverter, Calendar.class);
@@ -103,21 +105,21 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
 	 */
-	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz) {
+	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, DictionaryConverter... converters) {
 		Sheet sheet = clazz.getAnnotation(Sheet.class);
 
 		if (sheet != null) {
 			String sheetName = sheet.value();
 			if (sheetName != null && !"".equals(sheetName)) {
-				return toBean(excelResult.toMap(sheetName), clazz, true);
+				return toBean(excelResult.toMap(sheetName), clazz, true, converters);
 			}
 
 			int sheetIndex = sheet.index();
 			if (sheetIndex >= 0) {
-				return toBean(excelResult.toMap(sheetIndex), clazz, true);
+				return toBean(excelResult.toMap(sheetIndex), clazz, true, converters);
 			}
 		}
-		return toBean(excelResult.toMap(), clazz, true);
+		return toBean(excelResult.toMap(), clazz, true, converters);
 	}
 
 	/**
@@ -130,8 +132,8 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
 	 */
-	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, int sheetIndex) {
-		return toBean(excelResult.toMap(sheetIndex), clazz, true);
+	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, int sheetIndex, DictionaryConverter... converters) {
+		return toBean(excelResult.toMap(sheetIndex), clazz, true, converters);
 	}
 
 	/**
@@ -144,8 +146,9 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
 	 */
-	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, String sheetName) {
-		return toBean(excelResult.toMap(sheetName), clazz, true);
+	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, String sheetName,
+			DictionaryConverter... converters) {
+		return toBean(excelResult.toMap(sheetName), clazz, true, converters);
 	}
 
 	/**
@@ -157,8 +160,8 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
 	 */
-	public static <T> List<T> toBean(List<Map<String, String>> list, Class<T> clazz) {
-		return toBean(list, clazz, true);
+	public static <T> List<T> toBean(List<Map<String, String>> list, Class<T> clazz, DictionaryConverter... converters) {
+		return toBean(list, clazz, true, converters);
 	}
 
 	/**
@@ -171,13 +174,14 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果列表为空，或者为null，则直接返回null
 	 */
-	public static <T> List<T> toBean(List<Map<String, String>> list, Class<T> clazz, boolean ignoreException) {
+	public static <T> List<T> toBean(List<Map<String, String>> list, Class<T> clazz, boolean ignoreException,
+			DictionaryConverter... converters) {
 		if (list == null || list.size() == 0) {
 			return null;
 		}
 		List<T> result = new ArrayList<T>();
 		for (Map<String, String> map : list) {
-			T bean = toBean(map, clazz, ignoreException);
+			T bean = toBean(map, clazz, ignoreException, converters);
 			if (bean != null) {
 				result.add(bean);
 			}
@@ -193,8 +197,8 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return ExcelResult Excel结果对象
 	 */
-	public static <T> ExcelResult toResult(List<T> list) {
-		return toResult(list, true);
+	public static <T> ExcelResult toResult(List<T> list, DictionaryConverter... converters) {
+		return toResult(list, true, converters);
 	}
 
 	/**
@@ -207,7 +211,7 @@ public class BeanUtils {
 	 * @return Excel结果对象
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T> ExcelResult toResult(List<T> list, boolean ignoreException) {
+	public static <T> ExcelResult toResult(List<T> list, boolean ignoreException, DictionaryConverter... converters) {
 		if (list == null || list.size() == 0) {
 			return null;
 		}
@@ -232,7 +236,7 @@ public class BeanUtils {
 		exlSheet.addHeadRow(getHeads(clazz));
 		for (int i = 0; i < list.size(); i++) {
 			T obj = list.get(i);
-			Map<String, String> map = toMap(obj, ignoreException);
+			Map<String, String> map = toMap(obj, ignoreException, converters);
 			if (map == null) {
 				continue;
 			}
@@ -270,8 +274,8 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果Map为空或者null，则返回 null,如果转换失败则返回null
 	 */
-	public static <T> T toBean(Map<String, String> map, Class<T> clazz) {
-		return toBean(map, clazz, true);
+	public static <T> T toBean(Map<String, String> map, Class<T> clazz, DictionaryConverter... converters) {
+		return toBean(map, clazz, true, converters);
 	}
 
 	/**
@@ -284,7 +288,8 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return 如果Map为空或者null，则返回 null
 	 */
-	public static <T> T toBean(Map<String, String> map, Class<T> clazz, boolean ignoreException) {
+	public static <T> T toBean(Map<String, String> map, Class<T> clazz, boolean ignoreException,
+			DictionaryConverter... converters) {
 		if (map == null || map.isEmpty()) {
 			return null;
 		}
@@ -310,6 +315,7 @@ public class BeanUtils {
 				}
 				String value = MapUtils.getString(map, name);
 				value = getDictionaryValue(rowField, value, true);
+				value = ConverterUtils.converter(field.getName(), rowField.index(), value, converters);
 				org.apache.commons.beanutils.BeanUtils.setProperty(obj, field.getName(), value);
 			}
 			return obj;
@@ -332,8 +338,8 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return List 中封装的是Map
 	 */
-	public static <T> List<Map<String, String>> toMap(List<T> list) {
-		return toMap(list, true);
+	public static <T> List<Map<String, String>> toMap(List<T> list, DictionaryConverter... converters) {
+		return toMap(list, true, converters);
 	}
 
 	/**
@@ -345,14 +351,14 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return List 中封装的是Map
 	 */
-	public static <T> List<Map<String, String>> toMap(List<T> list, boolean ignoreException) {
+	public static <T> List<Map<String, String>> toMap(List<T> list, boolean ignoreException, DictionaryConverter... converters) {
 		if (list == null || list.size() == 0) {
 			return null;
 		}
 
 		List<Map<String, String>> result = new LinkedList<Map<String, String>>();
 		for (T t : list) {
-			Map<String, String> map = toMap(t, ignoreException);
+			Map<String, String> map = toMap(t, ignoreException, converters);
 			if (map != null) {
 				result.add(map);
 			}
@@ -368,8 +374,8 @@ public class BeanUtils {
 	 * @param <T> clazz 指定的类型，任意对象类型
 	 * @return Map 如果属性有注解，则key - 为Row 注解中的名称，value 为属性值
 	 */
-	public static <T> Map<String, String> toMap(T obj) {
-		return toMap(obj, true);
+	public static <T> Map<String, String> toMap(T obj, DictionaryConverter... converters) {
+		return toMap(obj, true, converters);
 	}
 
 	/**
@@ -381,7 +387,7 @@ public class BeanUtils {
 	 * @param <T> 任意对象类型
 	 * @return Map 如果属性有注解，则key - 为Row 注解中的名称，value 为属性值
 	 */
-	public static <T> Map<String, String> toMap(T obj, boolean ignoreException) {
+	public static <T> Map<String, String> toMap(T obj, boolean ignoreException, DictionaryConverter... converters) {
 		if (obj == null) {
 			if (ignoreException) {
 				return null;
@@ -400,8 +406,11 @@ public class BeanUtils {
 				if (rowField != null && !"".equals(rowField.value())) {
 					name = rowField.value();
 				}
-				String value = org.apache.commons.beanutils.BeanUtils.getProperty(obj, field.getName());
+
+				String fieldName = field.getName();
+				String value = org.apache.commons.beanutils.BeanUtils.getProperty(obj, fieldName);
 				value = getDictionaryValue(rowField, value, false);
+				value = ConverterUtils.converter(fieldName, rowField.index(), value, converters);
 				map.put(name, value);
 			}
 			return map;
