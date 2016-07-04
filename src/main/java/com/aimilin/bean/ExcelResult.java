@@ -48,20 +48,24 @@ public class ExcelResult {
 		return sheetList;
 	}
 
+	public int getSheetCount() {
+		return sheetList == null ? 0 : sheetList.size();
+	}
+
 	public void setSheetList(List<ExcelSheet> sheetList) {
 		this.sheetList = sheetList;
 	}
 
 	public List<List<String>> toList() {
-		return ExcelResultUtils.toList(this);
+		return ExcelResultUtils.toList(this, 1);
 	}
 
 	public List<List<String>> toList(int sheetIndex) {
-		return ExcelResultUtils.toList(this, sheetIndex);
+		return ExcelResultUtils.toList(this, 1, sheetIndex);
 	}
 
 	public List<List<String>> toList(String sheetName) {
-		return ExcelResultUtils.toList(this, sheetName);
+		return ExcelResultUtils.toList(this, 1, sheetName);
 	}
 
 	public List<Map<String, String>> toMap(DictionaryConverter... converters) {

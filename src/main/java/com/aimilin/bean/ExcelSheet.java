@@ -101,11 +101,15 @@ public class ExcelSheet {
 		this.rowList = rowList;
 	}
 
+	public int getRowCount() {
+		return this.rowList == null ? 0 : this.rowList.size();
+	}
+
 	public ExcelRow getHeadRow() {
 		return headRow;
 	}
-	
-	public List<String> getHeads(){
+
+	public List<String> getHeads() {
 		return headRow.getCellList();
 	}
 

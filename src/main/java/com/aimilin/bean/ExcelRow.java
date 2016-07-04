@@ -48,6 +48,10 @@ public class ExcelRow {
 		return cellList;
 	}
 
+	public int getCellCount() {
+		return cellList == null ? 0 : cellList.size();
+	}
+
 	public List<String> getCellList() {
 		return cellList;
 	}

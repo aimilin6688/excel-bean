@@ -34,8 +34,8 @@ public class ExcelResultUtils {
 	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
-	public static List<List<String>> toList(ExcelResult excelResult, DictionaryConverter... converters) {
-		return toList(excelResult, new SellectSheetAll(), converters);
+	public static List<List<String>> toList(ExcelResult excelResult, int startLine, DictionaryConverter... converters) {
+		return toList(excelResult, startLine, new SellectSheetAll(), converters);
 	}
 
 	/**
@@ -47,12 +47,12 @@ public class ExcelResultUtils {
 	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
-	public static List<List<String>> toList(final ExcelResult excelResult, final int sheetIndex,
+	public static List<List<String>> toList(final ExcelResult excelResult, int startLine, final int sheetIndex,
 			DictionaryConverter... converters) {
 		if (sheetIndex < 0) {
 			throw new IllegalArgumentException("sheetName must not be larger 0!");
 		}
-		return toList(excelResult, new SellectSheetByIndex(sheetIndex), converters);
+		return toList(excelResult, startLine, new SellectSheetByIndex(sheetIndex), converters);
 	}
 
 	/**
@@ -64,10 +64,13 @@ public class ExcelResultUtils {
 	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
-	public static List<List<String>> toList(ExcelResult excelResult, SellectSheet sellectSheet,
+	public static List<List<String>> toList(ExcelResult excelResult, int startLine, SellectSheet sellectSheet,
 			DictionaryConverter... converters) {
 		if (excelResult == null) {
 			throw new IllegalArgumentException("excelResult must not be null!");
+		}
+		if (startLine < 0) {
+			throw new IllegalArgumentException("startLine must not larger or equals zero!");
 		}
 
 		List<ExcelSheet> sheetList = excelResult.getSheetList();
@@ -85,7 +88,11 @@ public class ExcelResultUtils {
 				}
 
 				List<String> heads = sheet.getHeads();
-				for (ExcelRow row : sheet.getRowList()) {
+				for (int j = 0; j < rows.size(); j++) {
+					if (j < startLine) {
+						continue;
+					}
+					ExcelRow row = rows.get(j);
 					List<String> cells = row.getCellList();
 					List<String> cellList = new ArrayList<String>();
 					for (int cellIndex = 0; cellIndex < cells.size(); cellIndex++) {
@@ -109,12 +116,12 @@ public class ExcelResultUtils {
 	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
-	public static List<List<String>> toList(final ExcelResult excelResult, final String sheetName,
+	public static List<List<String>> toList(final ExcelResult excelResult, int startLine, final String sheetName,
 			DictionaryConverter... converters) {
 		if (sheetName == null || "".equals(sheetName)) {
 			throw new IllegalArgumentException("sheetName must not be null!");
 		}
-		return toList(excelResult, new SellectSheetByName(sheetName), converters);
+		return toList(excelResult, startLine, new SellectSheetByName(sheetName), converters);
 	}
 
 	/**
