@@ -7,6 +7,7 @@ import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.apache.commons.beanutils.Converter;
 
 public class ExtConvertUtilsBean extends ConvertUtilsBean {
+	private static final EnumConverter ENUM_CONVERTER = new EnumConverter();
 
 	@Override
 	public String convert(Object value) {
@@ -40,4 +41,15 @@ public class ExtConvertUtilsBean extends ConvertUtilsBean {
 		}
 		return (converter.convert(String.class, value));
 	}
+
+	@Override
+	public Converter lookup(Class<?> clazz) {
+		final Converter converter = super.lookup(clazz);
+		if (converter == null && clazz.isEnum()) {
+			return ENUM_CONVERTER;
+		} else {
+			return converter;
+		}
+	}
+
 }
