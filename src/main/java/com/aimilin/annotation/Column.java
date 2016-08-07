@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Inherited
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Row {
+public @interface Column {
 	/**
 	 * 列名称
 	 * 

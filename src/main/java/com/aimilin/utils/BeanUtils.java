@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aimilin.annotation.Dictionary;
-import com.aimilin.annotation.Row;
+import com.aimilin.annotation.Column;
 import com.aimilin.annotation.Sheet;
 import com.aimilin.bean.ExcelResult;
 import com.aimilin.bean.ExcelRow;
@@ -71,7 +71,7 @@ public class BeanUtils {
 	 * @param dic2value 字典值转换成对象值，true - 根据Dictionary 的value 查找，返回name，false - 根据Dictionary 的name查找，返回 value
 	 * @return String 字典值，或者字典名称
 	 */
-	private static String getDictionaryValue(Row rowField, String value, boolean dic2value) {
+	private static String getDictionaryValue(Column rowField, String value, boolean dic2value) {
 		if (rowField == null) {
 			return value;
 		}
@@ -261,7 +261,7 @@ public class BeanUtils {
 		List<String> heads = new ArrayList<String>();
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
-			Row rowField = field.getAnnotation(Row.class);
+			Column rowField = field.getAnnotation(Column.class);
 			String name = field.getName();
 			if (rowField != null && !"".equals(rowField.value())) {
 				name = rowField.value();
@@ -272,7 +272,7 @@ public class BeanUtils {
 	}
 
 	/**
-	 * 根据Map设置Class属性，使用{@link Row} 注解}
+	 * 根据Map设置Class属性，使用{@link Column} 注解}
 	 * 
 	 * @author LiuJunGuang
 	 * @param map 属性值Map
@@ -285,7 +285,7 @@ public class BeanUtils {
 	}
 
 	/**
-	 * 根据Map设置Class属性，使用{@link Row} 注解}
+	 * 根据Map设置Class属性，使用{@link Column} 注解}
 	 * 
 	 * @author LiuJunGuang
 	 * @param map 属性值Map
@@ -311,7 +311,7 @@ public class BeanUtils {
 		String[] keys = map.keySet().toArray(new String[0]);
 		for (Field field : fields) {
 			try {
-				Row rowField = field.getAnnotation(Row.class);
+				Column rowField = field.getAnnotation(Column.class);
 				String name = field.getName();
 				if (rowField != null) {
 					name = rowField.value();
@@ -415,7 +415,7 @@ public class BeanUtils {
 			Map<String, String> map = new LinkedHashMap<String, String>();
 			Arrays.sort(fields, fieldComparator);// 属性按照index 排序
 			for (Field field : fields) {
-				Row rowField = field.getAnnotation(Row.class);
+				Column rowField = field.getAnnotation(Column.class);
 				String name = field.getName();
 				if (rowField != null && !"".equals(rowField.value())) {
 					name = rowField.value();
