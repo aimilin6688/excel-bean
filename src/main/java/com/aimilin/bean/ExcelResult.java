@@ -50,7 +50,7 @@ public class ExcelResult {
 	 * 根据索引号获取Sheet对象
 	 * 
 	 * @param index 索引号
-	 * @return
+	 * @return ExcelSheet结果
 	 */
 	public ExcelSheet getSheet(int index) {
 		return sheetList.get(index);
@@ -60,7 +60,7 @@ public class ExcelResult {
 	 * 根据名称获取Sheet对象
 	 * 
 	 * @param sheetName 名称
-	 * @return
+	 * @return ExcelSheet结果
 	 */
 	public ExcelSheet getSheet(String sheetName) {
 		if (sheetList == null) {
