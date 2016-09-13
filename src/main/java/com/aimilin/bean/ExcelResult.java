@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.aimilin.converter.DictionaryConverter;
 import com.aimilin.utils.BeanUtils;
 import com.aimilin.utils.ExcelResultUtils;
@@ -42,6 +44,34 @@ public class ExcelResult {
 		}
 		sheetList.add(sheet);
 		return sheetList;
+	}
+
+	/**
+	 * 根据索引号获取Sheet对象
+	 * 
+	 * @param index 索引号
+	 * @return
+	 */
+	public ExcelSheet getSheet(int index) {
+		return sheetList.get(index);
+	}
+
+	/**
+	 * 根据名称获取Sheet对象
+	 * 
+	 * @param sheetName 名称
+	 * @return
+	 */
+	public ExcelSheet getSheet(String sheetName) {
+		if (sheetList == null) {
+			return null;
+		}
+		for (ExcelSheet excelSheet : sheetList) {
+			if (StringUtils.equals(sheetName, excelSheet.getName())) {
+				return excelSheet;
+			}
+		}
+		return null;
 	}
 
 	public List<ExcelSheet> getSheetList() {

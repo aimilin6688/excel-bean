@@ -4,10 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
@@ -48,10 +50,13 @@ public class ExcelReadUtils {
 		case Cell.CELL_TYPE_NUMERIC:
 			if (DateUtil.isCellDateFormatted(cell)) {
 				value = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cell.getDateCellValue());
+			} else if (cell.getCellStyle().getDataFormat() == 165) {
+				value = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cell.getDateCellValue());
 			} else {
 				value = String.valueOf(cell.getNumericCellValue());
-				if (value != null && !"".equals(value) && value.endsWith(".0")) {
-					value = value.substring(0, value.length() - ".0".length());
+				value = StringUtils.removeEnd(value, ".0");
+				if (StringUtils.containsIgnoreCase(value, "E")) {
+					value = new BigDecimal(value).toPlainString();
 				}
 			}
 			break;
