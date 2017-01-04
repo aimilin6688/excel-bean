@@ -32,6 +32,7 @@ public class ExcelResultUtils {
 	 * 
 	 * @param excelResult Excel结果集
 	 * @param converters 可选，参数类型转换器
+	 * @param startLine 开始行号，从0开始
 	 * @return List 数据列表
 	 */
 	public static List<List<String>> toList(ExcelResult excelResult, int startLine, DictionaryConverter... converters) {
@@ -43,7 +44,8 @@ public class ExcelResultUtils {
 	 * 
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
-	 * @param sheetIndex sheet索引值，从0开始
+	 * @param startLine 开始行号，从0开始
+	 * @param sheetIndex 开始Sheet，从0开始
 	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
@@ -60,7 +62,7 @@ public class ExcelResultUtils {
 	 * 
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
-	 * @param sellectSheet sheet索引值，从0开始
+	 * @param startLine 开始行号，从0开始
 	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
@@ -112,6 +114,7 @@ public class ExcelResultUtils {
 	 * 
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
+	 * @param startLine 开始行号，从0开始
 	 * @param sheetName sheet名称，如果指定，则只有符合条件的话，才会转换
 	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
@@ -197,7 +200,8 @@ public class ExcelResultUtils {
 					try {
 						value = ConverterUtils.converter(titles.get(k), k, cells.get(k), converters);
 					} catch (Exception e) {
-						log.warn("转换Sheet({})时，第{}行，第{}列出错.错误：{}", sheet.getName(), row.getIndex() + 1, k + 1, e.getMessage());
+						log.warn("转换Sheet({})时，第{}行，第{}列出错.错误：{}", sheet.getName(), row.getIndex() + 1, k + 1,
+								e.getMessage());
 					}
 					map.put(titles.get(k), value);
 				}
@@ -287,7 +291,8 @@ public class ExcelResultUtils {
 	 * @param converters 可选，参数类型转换器
 	 * @return ExcelResult Excel 结果集
 	 */
-	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, DictionaryConverter... converters) {
+	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads,
+			DictionaryConverter... converters) {
 		return toResult(listMap, heads, heads, "", "sheet", converters);
 	}
 
@@ -336,8 +341,8 @@ public class ExcelResultUtils {
 	 * @param converters 可选，参数类型转换器
 	 * @return ExcelResult Excel结果集
 	 */
-	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, Map<String, String> headToProp, String defaultValue,
-			String sheetName, DictionaryConverter... converters) {
+	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, Map<String, String> headToProp,
+			String defaultValue, String sheetName, DictionaryConverter... converters) {
 		if (headToProp == null || headToProp.isEmpty()) {
 			throw new IllegalArgumentException("headToProp must not be null!");
 		}

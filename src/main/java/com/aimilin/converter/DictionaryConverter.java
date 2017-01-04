@@ -13,8 +13,8 @@ public interface DictionaryConverter {
 	 * 注意：<b>如果属性不需要转换请返回原值</b>
 	 * 
 	 * @param propName 属性名称
-	 * @param propValue 属性值
-	 * @return Sring 转换之后的值
+	 * @param index 属性索引
+	 * @return propValue 传入参数值
 	 */
 	public String convert(String propName, int index, String propValue);
 }

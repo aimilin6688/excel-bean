@@ -281,6 +281,7 @@ public class BeanUtils {
 	 * @param map 属性值Map
 	 * @param clazz 需要生成的JavaBean对象
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 字典转换器，可选
 	 * @return 如果Map为空或者null，则返回 null,如果转换失败则返回null
 	 */
 	public static <T> T toBean(Map<String, String> map, Class<T> clazz, DictionaryConverter... converters) {
@@ -350,6 +351,7 @@ public class BeanUtils {
 	 * @author LiuJunGuang
 	 * @param list 对象列表
 	 * @param <T> clazz 指定的类型，任意对象类型
+	 * @param converters 可选，参数类型转换器
 	 * @return List 中封装的是Map
 	 */
 	public static <T> List<Map<String, String>> toMap(List<T> list, DictionaryConverter... converters) {
