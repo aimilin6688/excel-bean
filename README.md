@@ -10,7 +10,7 @@
 		<dependency>
 			<groupId>com.aimilin</groupId>
 			<artifactId>excel-bean</artifactId>
-			<version>0.0.1-beta4</version>
+			<version>{最新版本}</version>
 		</dependency>
 ```
 
