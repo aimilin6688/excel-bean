@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Inherited
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Sheet {
+public @interface ExlSheet {
 	/**
 	 * Excel 中Sheet的名称，在读取时，如果value 有值，则只读取value指定的sheet，如果value无值index有值，则只读取index索引指定的sheet。<br>
 	 * 如果都没有设定则默认读取所有sheet

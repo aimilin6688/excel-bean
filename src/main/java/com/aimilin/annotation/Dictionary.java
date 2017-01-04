@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 字典注解
+ * 
  * @author LiuJunGuang
  */
 @Inherited

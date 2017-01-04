@@ -21,9 +21,9 @@ import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aimilin.annotation.Column;
 import com.aimilin.annotation.Dictionary;
-import com.aimilin.annotation.Sheet;
+import com.aimilin.annotation.ExlColumn;
+import com.aimilin.annotation.ExlSheet;
 import com.aimilin.bean.ExcelResult;
 import com.aimilin.bean.ExcelRow;
 import com.aimilin.bean.ExcelSheet;
@@ -72,7 +72,7 @@ public class BeanUtils {
 	 * @param dic2value 字典值转换成对象值，true - 根据Dictionary 的value 查找，返回name，false - 根据Dictionary 的name查找，返回 value
 	 * @return String 字典值，或者字典名称
 	 */
-	private static String getDictionaryValue(Column rowField, String value, boolean dic2value) {
+	private static String getDictionaryValue(ExlColumn rowField, String value, boolean dic2value) {
 		if (rowField == null) {
 			return value;
 		}
@@ -107,7 +107,7 @@ public class BeanUtils {
 	 * @return 如果列表为空，或者为null，则直接返回null,如果发生异常则直接返回null
 	 */
 	public static <T> List<T> toBean(ExcelResult excelResult, Class<T> clazz, DictionaryConverter... converters) {
-		Sheet sheet = clazz.getAnnotation(Sheet.class);
+		ExlSheet sheet = clazz.getAnnotation(ExlSheet.class);
 
 		if (sheet != null) {
 			String sheetName = sheet.value();
@@ -227,7 +227,7 @@ public class BeanUtils {
 		Class clazz = list.get(0).getClass();
 		String sheetName = clazz.getSimpleName();
 		int sheetIndex = 0;
-		Sheet sheet = (Sheet) clazz.getAnnotation(Sheet.class);
+		ExlSheet sheet = (ExlSheet) clazz.getAnnotation(ExlSheet.class);
 		// 设置sheet名称
 		if (sheet != null) {
 			sheetName = sheet.value();
@@ -264,7 +264,7 @@ public class BeanUtils {
 		List<String> heads = new ArrayList<String>();
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
-			Column rowField = field.getAnnotation(Column.class);
+			ExlColumn rowField = field.getAnnotation(ExlColumn.class);
 			String name = field.getName();
 			if (rowField != null && !"".equals(rowField.value())) {
 				name = rowField.value();
@@ -275,7 +275,7 @@ public class BeanUtils {
 	}
 
 	/**
-	 * 根据Map设置Class属性，使用{@link Column} 注解}
+	 * 根据Map设置Class属性，使用{@link ExlColumn} 注解}
 	 * 
 	 * @author LiuJunGuang
 	 * @param map 属性值Map
@@ -289,7 +289,7 @@ public class BeanUtils {
 	}
 
 	/**
-	 * 根据Map设置Class属性，使用{@link Column} 注解}
+	 * 根据Map设置Class属性，使用{@link ExlColumn} 注解}
 	 * 
 	 * @author LiuJunGuang
 	 * @param map 属性值Map
@@ -315,7 +315,7 @@ public class BeanUtils {
 		String[] keys = map.keySet().toArray(new String[0]);
 		for (Field field : fields) {
 			try {
-				Column rowField = field.getAnnotation(Column.class);
+				ExlColumn rowField = field.getAnnotation(ExlColumn.class);
 				String name = field.getName();
 				if (rowField != null) {
 					name = rowField.value();
@@ -428,7 +428,7 @@ public class BeanUtils {
 					continue;
 				}
 
-				Column rowField = field.getAnnotation(Column.class);
+				ExlColumn rowField = field.getAnnotation(ExlColumn.class);
 				String name = field.getName();
 				if (rowField != null && !"".equals(rowField.value())) {
 					name = rowField.value();

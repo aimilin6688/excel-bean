@@ -3,7 +3,7 @@ package com.aimilin.utils;
 import java.lang.reflect.Field;
 import java.util.Comparator;
 
-import com.aimilin.annotation.Column;
+import com.aimilin.annotation.ExlColumn;
 
 /**
  * 属性排序器
@@ -13,8 +13,8 @@ import com.aimilin.annotation.Column;
 public class FieldComparator implements Comparator<Field> {
 
 	public int compare(Field o1, Field o2) {
-		Column f1 = o1.getAnnotation(Column.class);
-		Column f2 = o2.getAnnotation(Column.class);
+		ExlColumn f1 = o1.getAnnotation(ExlColumn.class);
+		ExlColumn f2 = o2.getAnnotation(ExlColumn.class);
 		if (f1 == null && f2 == null) {
 			return o1.getName().compareTo(o2.getName());
 		}
