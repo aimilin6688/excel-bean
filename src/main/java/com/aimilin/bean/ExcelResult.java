@@ -12,7 +12,7 @@ import com.aimilin.utils.ExcelResultUtils;
 
 /**
  * 存放Excel读取结果
- * 
+ *
  * @author LiuJunGuang
  */
 public class ExcelResult {
@@ -34,7 +34,7 @@ public class ExcelResult {
 
 	/**
 	 * 添加ExcelSheet
-	 * 
+	 *
 	 * @param sheet ExcelSheet 对象
 	 * @return ExcelSheet 结果集
 	 */
@@ -48,7 +48,7 @@ public class ExcelResult {
 
 	/**
 	 * 根据索引号获取Sheet对象
-	 * 
+	 *
 	 * @param index 索引号
 	 * @return ExcelSheet结果
 	 */
@@ -58,7 +58,7 @@ public class ExcelResult {
 
 	/**
 	 * 根据名称获取Sheet对象
-	 * 
+	 *
 	 * @param sheetName 名称
 	 * @return ExcelSheet结果
 	 */

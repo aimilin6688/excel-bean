@@ -1,6 +1,5 @@
 package com.aimilin.utils;
 
-import java.beans.Transient;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import com.aimilin.annotation.Dictionary;
 import com.aimilin.annotation.ExlColumn;
 import com.aimilin.annotation.ExlSheet;
+import com.aimilin.annotation.ExlTransient;
 import com.aimilin.bean.ExcelResult;
 import com.aimilin.bean.ExcelRow;
 import com.aimilin.bean.ExcelSheet;
@@ -32,7 +32,7 @@ import com.aimilin.converter.ExtConvertUtilsBean;
 
 /**
  * Bean工具类
- * 
+ *
  * @author LiuJunGuang
  */
 public class BeanUtils {
@@ -65,7 +65,7 @@ public class BeanUtils {
 
 	/**
 	 * 获取字典中指定的类型值,如果字典中没有指定的值，则返回value
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param rowField Row 注解
 	 * @param value 属性值
@@ -98,7 +98,7 @@ public class BeanUtils {
 
 	/**
 	 * 将excelResult 转换成javaBean
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param excelResult ExcelResult结果集
 	 * @param clazz clazz 需要生成的JavaBean对象
@@ -125,7 +125,7 @@ public class BeanUtils {
 
 	/**
 	 * 将excelResult 转换成javaBean
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param excelResult ExcelResult结果集
 	 * @param clazz clazz 需要生成的JavaBean对象
@@ -141,7 +141,7 @@ public class BeanUtils {
 
 	/**
 	 * 将excelResult 转换成javaBean
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param excelResult ExcelResult结果集
 	 * @param clazz clazz 需要生成的JavaBean对象
@@ -157,7 +157,7 @@ public class BeanUtils {
 
 	/**
 	 * 将ListMap 转换成javaBean
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param list 需要转换成Bean对象的List数据
 	 * @param clazz clazz 需要生成的JavaBean对象
@@ -172,7 +172,7 @@ public class BeanUtils {
 
 	/**
 	 * 将ListMap 转换成javaBean
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param list 需要转换成Bean对象的List数据
 	 * @param clazz 需要生成的JavaBean对象
@@ -198,7 +198,7 @@ public class BeanUtils {
 
 	/**
 	 * 将结果对象转换成Excel结果集对象,并忽略异常信息
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param list 对象列表
 	 * @param <T> clazz 指定的类型，任意对象类型
@@ -211,7 +211,7 @@ public class BeanUtils {
 
 	/**
 	 * 将结果对象转换成Excel结果集对象
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param list 对象列表
 	 * @param ignoreException true 忽略异常信息，false 抛出异常信息
@@ -276,7 +276,7 @@ public class BeanUtils {
 
 	/**
 	 * 根据Map设置Class属性，使用{@link ExlColumn} 注解}
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param map 属性值Map
 	 * @param clazz 需要生成的JavaBean对象
@@ -290,7 +290,7 @@ public class BeanUtils {
 
 	/**
 	 * 根据Map设置Class属性，使用{@link ExlColumn} 注解}
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param map 属性值Map
 	 * @param clazz 需要生成的JavaBean对象
@@ -347,7 +347,7 @@ public class BeanUtils {
 
 	/**
 	 * 将对象列表转换成Map列表，并忽略异常信息
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param list 对象列表
 	 * @param <T> clazz 指定的类型，任意对象类型
@@ -360,7 +360,7 @@ public class BeanUtils {
 
 	/**
 	 * 将对象列表转换成Map列表
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param list 对象列表
 	 * @param ignoreException true 忽略转换中的异常，false 抛出转换中的异常信息
@@ -386,7 +386,7 @@ public class BeanUtils {
 
 	/**
 	 * 将Java对象转换成Map对象,并忽略异常信息
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param obj 对象
 	 * @param <T> clazz 指定的类型，任意对象类型
@@ -399,7 +399,7 @@ public class BeanUtils {
 
 	/**
 	 * 将Java对象转换成Map对象
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param obj 对象
 	 * @param ignoreException true 忽略转换中的异常，false 抛出转换中的异常信息
@@ -423,7 +423,7 @@ public class BeanUtils {
 			int index = 0;
 			for (Field field : fields) {
 				index++;
-				Transient trans = field.getAnnotation(Transient.class);// 需要忽略的属性
+				ExlTransient trans = field.getAnnotation(ExlTransient.class);// 需要忽略的属性
 				if (trans != null && trans.value()) {
 					continue;
 				}
