@@ -40,7 +40,7 @@ public class Student1 {
 	@ExlColumn("总分") // 对应Excel中的公式，既 总分 = 语文分数 + 数学分数
 	private Double sumScore;
 	
-	@Transient // jdk7 中注解，如果使用该注解，则该属性不写入到Excel中
+	@ExlTransient //如果使用该注解，则该属性不写入到Excel中
 	private String className;//班级名称
 
 	//省略getter 和setter 方法

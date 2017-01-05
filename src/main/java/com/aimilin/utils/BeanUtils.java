@@ -264,6 +264,11 @@ public class BeanUtils {
 		List<String> heads = new ArrayList<String>();
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
+			ExlTransient trans = field.getAnnotation(ExlTransient.class);// 需要忽略的属性
+			if (trans != null && trans.value()) {
+				continue;
+			}
+
 			ExlColumn rowField = field.getAnnotation(ExlColumn.class);
 			String name = field.getName();
 			if (rowField != null && !"".equals(rowField.value())) {
@@ -315,6 +320,11 @@ public class BeanUtils {
 		String[] keys = map.keySet().toArray(new String[0]);
 		for (Field field : fields) {
 			try {
+				ExlTransient trans = field.getAnnotation(ExlTransient.class);// 需要忽略的属性
+				if (trans != null && trans.value()) {
+					continue;
+				}
+
 				ExlColumn rowField = field.getAnnotation(ExlColumn.class);
 				String name = field.getName();
 				if (rowField != null) {
