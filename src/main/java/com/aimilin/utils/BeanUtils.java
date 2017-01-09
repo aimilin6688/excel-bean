@@ -3,19 +3,12 @@ package com.aimilin.utils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.converters.CalendarConverter;
-import org.apache.commons.beanutils.converters.DateConverter;
-import org.apache.commons.beanutils.converters.SqlDateConverter;
-import org.apache.commons.beanutils.converters.SqlTimeConverter;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +21,6 @@ import com.aimilin.bean.ExcelResult;
 import com.aimilin.bean.ExcelRow;
 import com.aimilin.bean.ExcelSheet;
 import com.aimilin.converter.DictionaryConverter;
-import com.aimilin.converter.ExtConvertUtilsBean;
 
 /**
  * Bean工具类
@@ -38,30 +30,6 @@ import com.aimilin.converter.ExtConvertUtilsBean;
 public class BeanUtils {
 	private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
 	private static FieldComparator fieldComparator = new FieldComparator();
-	private static CalendarConverter calendarConverter = new CalendarConverter(null);
-	private static DateConverter dateConverter = new DateConverter(null);
-	private static SqlDateConverter sqlDateConverter = new SqlDateConverter(null);
-	private static SqlTimeConverter sqlTimeConverter = new SqlTimeConverter(null);
-	static {
-		String[] patterns = { "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yy-MM-dd HH:mm:ss", "yyyy-MM-dd",
-				"MM/dd/yyyy", "HH:mm:ss" };
-		setPatterns(patterns);
-		BeanUtilsBean.setInstance(new BeanUtilsBean(new ExtConvertUtilsBean()));
-		ConvertUtils.register(calendarConverter, Calendar.class);
-		ConvertUtils.register(dateConverter, java.util.Date.class);
-		ConvertUtils.register(sqlDateConverter, java.sql.Date.class);
-		ConvertUtils.register(sqlTimeConverter, java.sql.Time.class);
-	}
-
-	/**
-	 * @param patterns 日期转换时，日期的格式
-	 */
-	public static void setPatterns(String... patterns) {
-		calendarConverter.setPatterns(patterns);
-		dateConverter.setPatterns(patterns);
-		sqlDateConverter.setPatterns(patterns);
-		sqlTimeConverter.setPatterns(patterns);
-	}
 
 	/**
 	 * 获取字典中指定的类型值,如果字典中没有指定的值，则返回value
@@ -259,22 +227,33 @@ public class BeanUtils {
 
 	// 获取Excel标题信息
 	protected static List<String> getHeads(Class<?> clazz) {
-		Field[] fields = clazz.getDeclaredFields();// 根据Class对象获得属性 私有的也可以获得
+		Field[] fields = ReflectionUtils.getFields(clazz);// 根据Class对象获得属性 私有的也可以获得
 		Arrays.sort(fields, fieldComparator);// 属性按照index 排序
 		List<String> heads = new ArrayList<String>();
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
-			ExlTransient trans = field.getAnnotation(ExlTransient.class);// 需要忽略的属性
-			if (trans != null && trans.value()) {
-				continue;
-			}
+			try {
+				String fieldName = field.getName();
+				// 属性没有读方法，则直接忽略
+				if (!ReflectionUtils.hasReadMethod(clazz, fieldName)) {
+					continue;
+				}
 
-			ExlColumn rowField = field.getAnnotation(ExlColumn.class);
-			String name = field.getName();
-			if (rowField != null && !"".equals(rowField.value())) {
-				name = rowField.value();
+				// 需要忽略的属性
+				ExlTransient trans = field.getAnnotation(ExlTransient.class);
+				if (trans != null && trans.value()) {
+					continue;
+				}
+
+				ExlColumn rowField = field.getAnnotation(ExlColumn.class);
+				String name = field.getName();
+				if (rowField != null && !"".equals(rowField.value())) {
+					name = rowField.value();
+				}
+				heads.add(name);
+			} catch (Exception e) {
+				log.warn("获取{}类的属性{}的读方法出错！原因：{}", clazz.getName(), field.getName(), e.getMessage());
 			}
-			heads.add(name);
 		}
 		return heads;
 	}
@@ -310,7 +289,7 @@ public class BeanUtils {
 			return null;
 		}
 
-		Field[] fields = clazz.getDeclaredFields();// 根据Class对象获得属性 私有的也可以获得
+		Field[] fields = ReflectionUtils.getFields(clazz);// 根据Class对象获得属性 私有的也可以获得
 		T obj;
 		try {
 			obj = clazz.getConstructor().newInstance();
@@ -320,6 +299,13 @@ public class BeanUtils {
 		String[] keys = map.keySet().toArray(new String[0]);
 		for (Field field : fields) {
 			try {
+				String fieldName = field.getName();
+				// 没有Set方法直接跳过该属性
+				if (!ReflectionUtils.hasWriteMethod(clazz, fieldName)) {
+					continue;
+				}
+
+				// 添加忽略注解也直接跳过
 				ExlTransient trans = field.getAnnotation(ExlTransient.class);// 需要忽略的属性
 				if (trans != null && trans.value()) {
 					continue;
@@ -342,7 +328,7 @@ public class BeanUtils {
 				String value = MapUtils.getString(map, name);
 				value = getDictionaryValue(rowField, value, true);
 				value = ConverterUtils.converter(field.getName(), rowField.index(), value, converters);
-				org.apache.commons.beanutils.BeanUtils.setProperty(obj, field.getName(), value);
+				ReflectionUtils.setProperty(obj, field.getName(), value);
 			} catch (Exception e) {
 				if (ignoreException) {
 					log.warn(e.getMessage(), e);
@@ -427,13 +413,20 @@ public class BeanUtils {
 		}
 
 		try {
-			Field[] fields = obj.getClass().getDeclaredFields();// 根据Class对象获得属性 私有的也可以获得
+			Field[] fields = ReflectionUtils.getFields(obj.getClass());// 根据Class对象获得属性 私有的也可以获得
 			Map<String, String> map = new LinkedHashMap<String, String>();
 			Arrays.sort(fields, fieldComparator);// 属性按照index 排序
 			int index = 0;
 			for (Field field : fields) {
 				index++;
-				ExlTransient trans = field.getAnnotation(ExlTransient.class);// 需要忽略的属性
+				String fieldName = field.getName();
+				// 没有Get方法直接跳过该属性
+				if (!ReflectionUtils.hasReadMethod(obj.getClass(), fieldName)) {
+					continue;
+				}
+
+				// 需要忽略的属性
+				ExlTransient trans = field.getAnnotation(ExlTransient.class);
 				if (trans != null && trans.value()) {
 					continue;
 				}
@@ -444,8 +437,7 @@ public class BeanUtils {
 					name = rowField.value();
 				}
 
-				String fieldName = field.getName();
-				String value = org.apache.commons.beanutils.BeanUtils.getProperty(obj, fieldName);
+				String value = ReflectionUtils.getProperty(obj, fieldName);
 				value = getDictionaryValue(rowField, value, false);
 				int indexTemp = rowField == null ? index : rowField.index();
 				value = ConverterUtils.converter(fieldName, indexTemp, value, converters);
@@ -462,4 +454,5 @@ public class BeanUtils {
 			}
 		}
 	}
+
 }

@@ -1,5 +1,7 @@
 package com.aimilin.utils;
 
+import static org.junit.Assert.*;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,11 +21,9 @@ import com.aimilin.bean.ExcelResult;
 import com.aimilin.bean.Student;
 import com.hbzx.converter.StateConverter;
 
-import static org.junit.Assert.*;
-
 /**
  * Bean工具类测试
- * 
+ *
  * @author LiuJunGuang
  */
 public class BeanUtilsTest {
@@ -54,7 +54,7 @@ public class BeanUtilsTest {
 		map.put("数学分数", "89.34");
 		map.put("性别", "女");
 		map.put("状态", "启用");
-		BeanUtils.setPatterns(pattern);
+		ReflectionUtils.setPatterns(pattern);
 		Student stu = BeanUtils.toBean(map, Student.class, new StateConverter());
 		assertNotNull(stu);
 		assertEquals("张三", stu.getName());
@@ -80,7 +80,7 @@ public class BeanUtilsTest {
 		stu.setName("张三");
 		stu.setState(2);
 
-		BeanUtils.setPatterns(pattern);
+		ReflectionUtils.setPatterns(pattern);
 		Map<String, String> map = BeanUtils.toMap(stu, new StateConverter());
 		assertNotNull(stu);
 		assertEquals("18", map.get("年龄"));
