@@ -24,14 +24,14 @@ import com.aimilin.exception.ExcelReadException;
 
 /**
  * Excel 读取工具类
- * 
+ *
  * @author LiuJunGuang
  */
 public class ExcelReadUtils {
 
 	/**
 	 * 得到Excel表中的值
-	 * 
+	 *
 	 * @param hssfCell Excel中的每一个格子
 	 * @return Excel中每一个格子中的值
 	 */
@@ -85,7 +85,7 @@ public class ExcelReadUtils {
 
 	/**
 	 * 根据Excel文件输入流 ，获取Excel工作薄对象
-	 * 
+	 *
 	 * @param is 输入流
 	 * @return Workbook Excel工作博
 	 * @throws ExcelReadException - 从Input中读取失败，则抛出该异常
@@ -101,7 +101,7 @@ public class ExcelReadUtils {
 
 	/**
 	 * 根据Excel文件地址 获取Excel工作薄对象
-	 * 
+	 *
 	 * @param filePath excel文件地址
 	 * @return Workbook Excel工作博
 	 * @throws ExcelReadException - 从FilePath中读取失败，则抛出该异常，或者文件未找到等
@@ -111,14 +111,14 @@ public class ExcelReadUtils {
 		try {
 			return WorkbookFactory.create(new File(filePath));
 		} catch (Exception e) {
-			throw new ExcelReadException(e.getMessage());
+			throw new ExcelReadException(e.getMessage(), e);
 		}
 	}
 
 	/**
 	 * 读取Excel数据到list列表中，支持2003和2007格式读取<br>
 	 * <b>注意：</b>如果Excel单元格无内容，或者读取单元格失败则默认为空字符串
-	 * 
+	 *
 	 * @param bytes Excel 文件二进制数组
 	 * @param includeHeader 是否包含第一行标题头，true - 包含第一行标题，false - 不包含第一行标题
 	 * @param includeBlankLine 是否包含空行 true - 包含，false - 忽略空行
@@ -137,7 +137,7 @@ public class ExcelReadUtils {
 	/**
 	 * 读取Excel数据到list列表中，支持2003和2007格式读取<br>
 	 * <b>注意：</b>如果Excel单元格无内容，或者读取单元格失败则默认为空字符串
-	 * 
+	 *
 	 * @param is Excel 文件输入流
 	 * @param includeHeader 是否包含第一行标题头，true - 包含第一行标题，false - 不包含第一行标题
 	 * @param includeBlankLine 是否包含空行 true - 包含，false - 忽略空行
@@ -156,7 +156,7 @@ public class ExcelReadUtils {
 	/**
 	 * 读取Excel数据到list列表中，支持2003和2007格式读取<br>
 	 * <b>注意：</b>如果Excel单元格无内容，或者读取单元格失败则默认为空字符串
-	 * 
+	 *
 	 * @param filePath Excel 文件路径地址
 	 * @param includeHeader 是否包含第一行标题头，true - 包含第一行标题，false - 不包含第一行标题
 	 * @param includeBlankLine 是否包含空行 true - 包含，false - 忽略空行
@@ -168,14 +168,14 @@ public class ExcelReadUtils {
 			Workbook wb = getWorkbook(filePath);
 			return read(wb, includeHeader, includeBlankLine);
 		} catch (Exception e) {
-			throw new ExcelReadException(e.getMessage());
+			throw new ExcelReadException(e.getMessage(), e);
 		}
 	}
 
 	/**
 	 * 读取工作薄数据到List结果列表中.<br>
 	 * <b>注意：</b>如果有多个工作薄，会自动合并到List中
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param wb Excel 工作薄
 	 * @param includeHeader 是否忽略标题行（第一行），true - 包含，false - 忽略
@@ -223,7 +223,7 @@ public class ExcelReadUtils {
 
 	/**
 	 * 读取Sheet中的一行数据
-	 * 
+	 *
 	 * @author LiuJunGuang
 	 * @param sheet Excel 中一个Sheet对象
 	 * @param rowNum 行号
