@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.apache.commons.beanutils.converters.CalendarConverter;
 import org.apache.commons.beanutils.converters.DateConverter;
 import org.apache.commons.beanutils.converters.SqlDateConverter;
@@ -24,16 +25,38 @@ public class ReflectionUtils {
 	private static DateConverter dateConverter = new DateConverter(null);
 	private static SqlDateConverter sqlDateConverter = new SqlDateConverter(null);
 	private static SqlTimeConverter sqlTimeConverter = new SqlTimeConverter(null);
+	private static ExtConvertUtilsBean extConvertUtilsBean = new ExtConvertUtilsBean();
 	static {
 		String[] patterns = { "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yy-MM-dd HH:mm:ss", "yyyy-MM-dd",
 				"MM/dd/yyyy", "HH:mm:ss" };
 		setPatterns(patterns);
-		BeanUtilsBean.setInstance(new BeanUtilsBean(new ExtConvertUtilsBean()));
+		BeanUtilsBean.setInstance(new BeanUtilsBean(extConvertUtilsBean));
 		ConvertUtils.register(calendarConverter, Calendar.class);
 		ConvertUtils.register(dateConverter, java.util.Date.class);
 		ConvertUtils.register(sqlDateConverter, java.sql.Date.class);
 		ConvertUtils.register(sqlTimeConverter, java.sql.Time.class);
 	}
+	
+	
+	/**
+     * Register the provided converters with the specified defaults.
+     *
+     * @param throwException <code>true</code> if the converters should
+     * throw an exception when a conversion error occurs, otherwise
+     * <code>false</code> if a default value should be used.
+     * @param defaultNull <code>true</code>if the <i>standard</i> converters
+     * (see {@link ConvertUtilsBean#registerStandard(boolean, boolean)})
+     * should use a default value of <code>null</code>, otherwise <code>false</code>.
+     * N.B. This values is ignored if <code>throwException</code> is <code>true</code>
+     * @param defaultArraySize The size of the default array value for array converters
+     * (N.B. This values is ignored if <code>throwException</code> is <code>true</code>).
+     * Specifying a value less than zero causes a <code>null</code> value to be used for
+     * the default.
+     */
+    public static void register(boolean throwException, boolean defaultNull, int defaultArraySize) {
+    	extConvertUtilsBean.register(throwException, defaultNull, defaultArraySize);
+    }
+	
 
 	/**
 	 * @param patterns 日期转换时，日期的格式
