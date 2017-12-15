@@ -26,9 +26,17 @@ public class ReflectionUtils {
 	private static SqlDateConverter sqlDateConverter = new SqlDateConverter(null);
 	private static SqlTimeConverter sqlTimeConverter = new SqlTimeConverter(null);
 	private static ExtConvertUtilsBean extConvertUtilsBean = new ExtConvertUtilsBean();
+	private static String[] patterns = { "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yy-MM-dd HH:mm:ss", "yyyy-MM-dd", "MM/dd/yyyy", "HH:mm:ss" };
 	static {
-		String[] patterns = { "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yy-MM-dd HH:mm:ss", "yyyy-MM-dd",
-				"MM/dd/yyyy", "HH:mm:ss" };
+		ReflectionUtils.registerDateConverter(patterns);
+	}
+
+
+	/**
+	 * 重新注册日期转换器
+	 * @param patterns
+	 */
+	private static void registerDateConverter(String ... patterns) {
 		setPatterns(patterns);
 		BeanUtilsBean.setInstance(new BeanUtilsBean(extConvertUtilsBean));
 		ConvertUtils.register(calendarConverter, Calendar.class);
@@ -55,6 +63,7 @@ public class ReflectionUtils {
      */
     public static void register(boolean throwException, boolean defaultNull, int defaultArraySize) {
     	extConvertUtilsBean.register(throwException, defaultNull, defaultArraySize);
+    	registerDateConverter(patterns);
     }
 	
 
