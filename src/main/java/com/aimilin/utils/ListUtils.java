@@ -34,9 +34,9 @@ public class ListUtils {
 	 * @return 拆分之后的列表
 	 */
 	public static <T> List<List<T>> split(List<T> list, int size) {
-		if (list == null || list.size() == 0)
+		if (list == null || list.isEmpty())
 			return null;
-		List<List<T>> splitList = new LinkedList<List<T>>();
+		List<List<T>> splitList = new LinkedList<>();
 
 		int listSize = list.size();
 		for (int i = 0; i < Math.ceil(listSize / Double.valueOf(size)); i++) {
@@ -69,7 +69,7 @@ public class ListUtils {
 		if (params == null) {
 			return null;
 		}
-		List<S> targets = new ArrayList<S>();
+		List<S> targets = new ArrayList<>();
 		for (S param : params) {
 			targets.add(param);
 		}
@@ -85,7 +85,7 @@ public class ListUtils {
 	 * @return List 结果列表
 	 */
 	public static <T> List<T> mergerList(List<T> sources, List<T> targets) {
-		List<T> results = new ArrayList<T>();
+		List<T> results = new ArrayList<>();
 		if (sources != null && !sources.isEmpty()) {
 			results.addAll(sources);
 		}
@@ -103,7 +103,7 @@ public class ListUtils {
 	 * @return List 结果列表
 	 */
 	public static <T> List<T> mergerList(List<List<T>> sources) {
-		List<T> results = new ArrayList<T>();
+		List<T> results = new ArrayList<>();
 		if (sources == null || sources.isEmpty()) {
 			return results;
 		}
@@ -136,7 +136,7 @@ public class ListUtils {
 	public static List<String> str2List(String str, String separator) {
 		String[] array = StringUtils.split(str, separator);
 		if (ArrayUtils.isEmpty(array)) {
-			return new ArrayList<String>();
+			return new ArrayList<>();
 		}
 		return array2List(array);
 	}
@@ -224,7 +224,7 @@ public class ListUtils {
 	public static String list2Str(List<String> sources, String prefix, String separator) {
 		if (sources == null || sources.isEmpty())
 			return null;
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (String string : sources) {
 			if (prefix != null) {
 				sb.append(prefix);
@@ -243,7 +243,7 @@ public class ListUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <S> List<S> array2List(S... array) {
-		List<S> strList = new LinkedList<S>();
+		List<S> strList = new LinkedList<>();
 		if (array != null && array.length != 0) {
 			for (S string : array) {
 				strList.add(string);
@@ -262,7 +262,7 @@ public class ListUtils {
 		if (sources == null || sources.isEmpty()) {
 			return sources;
 		}
-		List<String> targets = new ArrayList<String>();
+		List<String> targets = new ArrayList<>();
 		for (String source : sources) {
 			if (StringUtils.isEmpty(source)) {
 				continue;
@@ -282,7 +282,7 @@ public class ListUtils {
 	 * @return List
 	 */
 	public static List<String> toUpper(List<String> strList) {
-		List<String> targets = new ArrayList<String>();
+		List<String> targets = new ArrayList<>();
 		for (String string : strList) {
 			if (StringUtils.isNotBlank(string)) {
 				targets.add(string.toUpperCase());
@@ -298,7 +298,7 @@ public class ListUtils {
 	 * @return List
 	 */
 	public static List<String> toLower(List<String> strList) {
-		List<String> targets = new ArrayList<String>();
+		List<String> targets = new ArrayList<>();
 		for (String string : strList) {
 			if (StringUtils.isNotBlank(string)) {
 				targets.add(string.toLowerCase());
@@ -389,9 +389,9 @@ public class ListUtils {
 	 * @return 拆分之后的列表
 	 */
 	public static <T> List<List<T>> splitList(List<T> list, int size) {
-		if (list == null || list.size() == 0)
+		if (list == null || list.isEmpty())
 			return null;
-		List<List<T>> splitList = new LinkedList<List<T>>();
+		List<List<T>> splitList = new LinkedList<>();
 
 		int listSize = list.size();
 		for (int i = 0; i < Math.ceil(listSize / Double.valueOf(size)); i++) {
@@ -413,9 +413,9 @@ public class ListUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T, V> List<V> filter(List<Map<String, T>> list, String key) {
-		if (list == null || list.size() == 0)
+		if (list == null || list.isEmpty())
 			return null;
-		List<V> result = new ArrayList<V>();
+		List<V> result = new ArrayList<>();
 		for (Map<String, ?> map : list) {
 			Object value = MapUtils.getObject(map, key);
 			if (value != null) {
@@ -434,8 +434,8 @@ public class ListUtils {
 	 * @return Map
 	 */
 	public static <T> Map<String, Map<String, T>> keyMap(List<Map<String, T>> list, String key) {
-		Map<String, Map<String, T>> result = new HashMap<String, Map<String, T>>();
-		if (list == null || list.size() == 0)
+		Map<String, Map<String, T>> result = new HashMap<>();
+		if (list == null || list.isEmpty())
 			return result;
 		for (Map<String, T> map : list) {
 			String value = MapUtils.getString(map, key);
@@ -469,8 +469,8 @@ public class ListUtils {
 	 */
 	public static <T> Map<String, List<Map<String, T>>> keyList(List<Map<String, T>> list, String key,
 			String defaultKey) {
-		Map<String, List<Map<String, T>>> result = new LinkedHashMap<String, List<Map<String, T>>>();
-		if (list == null || list.size() == 0)
+		Map<String, List<Map<String, T>>> result = new LinkedHashMap<>();
+		if (list == null || list.isEmpty())
 			return result;
 		for (Map<String, T> map : list) {
 			String keyValue = MapUtils.getString(map, key, defaultKey);
