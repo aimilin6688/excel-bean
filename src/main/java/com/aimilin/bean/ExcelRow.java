@@ -30,11 +30,11 @@ public class ExcelRow {
 	}
 
 	public List<String> addCell(Collection<String> values) {
-		if (values == null || values.size() == 0) {
+		if (values == null || values.isEmpty()) {
 			return cellList;
 		}
 		if (cellList == null) {
-			cellList = new LinkedList<String>();
+			cellList = new LinkedList<>();
 		}
 		cellList.addAll(values);
 		return cellList;
@@ -42,7 +42,7 @@ public class ExcelRow {
 
 	public List<String> addCell(String... values) {
 		if (cellList == null) {
-			cellList = new LinkedList<String>();
+			cellList = new LinkedList<>();
 		}
 		cellList.addAll(Arrays.asList(values));
 		return cellList;

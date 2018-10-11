@@ -30,6 +30,10 @@ import com.aimilin.converter.DictionaryConverter;
 public class BeanUtils {
 	private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
 	private static FieldComparator fieldComparator = new FieldComparator();
+	
+	private BeanUtils() {
+		super();
+	}
 
 	/**
 	 * 获取字典中指定的类型值,如果字典中没有指定的值，则返回value
