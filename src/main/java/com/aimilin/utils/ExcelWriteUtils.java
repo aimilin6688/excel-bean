@@ -26,6 +26,10 @@ import com.aimilin.exception.ExcelWriteException;
  * @author LiuJunGuang
  */
 public class ExcelWriteUtils {
+	
+	private ExcelWriteUtils() {
+		super();
+	}
 
 	/**
 	 * 根据文件类型获取文件名称

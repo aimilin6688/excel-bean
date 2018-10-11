@@ -1,6 +1,6 @@
 package com.aimilin.utils;
 
-import static java.util.Locale.*;
+import static java.util.Locale.ENGLISH;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -30,7 +30,10 @@ public class ReflectionUtils {
 	static {
 		ReflectionUtils.registerDateConverter(patterns);
 	}
-
+	
+	private ReflectionUtils() {
+		super();
+	}
 
 	/**
 	 * 重新注册日期转换器

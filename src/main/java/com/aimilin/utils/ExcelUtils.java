@@ -23,6 +23,10 @@ import com.aimilin.exception.ExcelWriteException;
  * @author LiuJunGuang
  */
 public class ExcelUtils {
+	
+	private ExcelUtils() {
+		super();
+	}
 
 	/**
 	 * 根据Excel文件输入流 ，获取Excel工作薄对象

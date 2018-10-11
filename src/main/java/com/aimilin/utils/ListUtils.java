@@ -20,6 +20,11 @@ import org.apache.commons.lang3.StringUtils;
  * @author LiuJunGuang
  */
 public class ListUtils {
+	
+	private ListUtils() {
+		super();
+	}
+
 	/**
 	 * 根据指定的大小拆分列表
 	 * 

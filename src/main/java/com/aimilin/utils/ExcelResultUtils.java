@@ -27,6 +27,10 @@ import com.aimilin.converter.DictionaryConverter;
 public class ExcelResultUtils {
 	private static Logger log = LoggerFactory.getLogger(ExcelResultUtils.class);
 
+	private ExcelResultUtils() {
+		super();
+	}
+
 	/**
 	 * 将Excel结果集转换成List
 	 * 
@@ -96,7 +100,7 @@ public class ExcelResultUtils {
 					}
 					ExcelRow row = rows.get(j);
 					List<String> cells = row.getCellList();
-					List<String> cellList = new ArrayList<String>();
+					List<String> cellList = new ArrayList<>();
 					for (int cellIndex = 0; cellIndex < cells.size(); cellIndex++) {
 						String value = ConverterUtils.converter(heads.get(cellIndex), cellIndex, cells.get(cellIndex),
 								converters);
@@ -175,7 +179,7 @@ public class ExcelResultUtils {
 			throw new IllegalArgumentException("sheetList must not be null!");
 		}
 
-		List<Map<String, String>> listMap = new LinkedList<Map<String, String>>();
+		List<Map<String, String>> listMap = new LinkedList<>();
 		for (int i = 0; i < sheetList.size(); i++) {
 			ExcelSheet sheet = sheetList.get(i);
 			if (!sellectSheet.isSellect(sheet)) {
@@ -183,7 +187,7 @@ public class ExcelResultUtils {
 			}
 
 			List<ExcelRow> rows = sheet.getRowList();
-			if (rows == null || rows.size() == 0) {
+			if (rows == null || rows.isEmpty()) {
 				continue;
 			}
 			// 获取标题行
@@ -191,10 +195,10 @@ public class ExcelResultUtils {
 			for (int j = 1; j < rows.size(); j++) {
 				ExcelRow row = rows.get(j);
 				List<String> cells = row.getCellList();
-				if (cells == null || cells.size() == 0) {
+				if (cells == null || cells.isEmpty()) {
 					continue;
 				}
-				Map<String, String> map = new LinkedHashMap<String, String>();
+				Map<String, String> map = new LinkedHashMap<>();
 				for (int k = 0; k < titles.size(); k++) {
 					String value = "";
 					try {
@@ -250,7 +254,7 @@ public class ExcelResultUtils {
 	 * @return 结果集
 	 */
 	public static ExcelResult toResult(List<List<String>> dataList, String sheetName, String... heads) {
-		if (dataList == null || dataList.size() == 0) {
+		if (dataList == null || dataList.isEmpty()) {
 			return null;
 		}
 		if (sheetName == null || "".equals(sheetName)) {
@@ -276,7 +280,7 @@ public class ExcelResultUtils {
 	 */
 	public static ExcelResult toResult(List<List<String>> dataList, String sheetName, List<String> heads) {
 		if (heads == null) {
-			heads = new ArrayList<String>();
+			heads = new ArrayList<>();
 		}
 		return toResult(dataList, sheetName, heads.toArray(new String[0]));
 	}
@@ -346,8 +350,8 @@ public class ExcelResultUtils {
 		if (headToProp == null || headToProp.isEmpty()) {
 			throw new IllegalArgumentException("headToProp must not be null!");
 		}
-		List<String> heads = new LinkedList<String>();
-		List<String> porps = new LinkedList<String>();
+		List<String> heads = new LinkedList<>();
+		List<String> porps = new LinkedList<>();
 		for (String key : headToProp.keySet()) {
 			heads.add(key);
 			porps.add(headToProp.get(key));
@@ -370,10 +374,10 @@ public class ExcelResultUtils {
 	 */
 	public static <T> ExcelResult toResult(List<Map<String, T>> listMap, List<String> heads, List<String> props,
 			String defaultValue, String sheetName, DictionaryConverter... converters) {
-		if (listMap == null || listMap.size() == 0) {
+		if (listMap == null || listMap.isEmpty()) {
 			return null;
 		}
-		if (heads == null || heads.size() == 0) {
+		if (heads == null || heads.isEmpty()) {
 			throw new IllegalArgumentException("Excel heads must not be null!");
 		}
 
@@ -389,7 +393,7 @@ public class ExcelResultUtils {
 			for (int j = 0; j < props.size(); j++) {
 				String propName = props.get(j);
 				String value = ConverterUtils.converter(propName, j, MapUtils.getString(map, propName), converters);
-				row.addCell(value == null ? defaultValue : value.toString());
+				row.addCell(value == null ? defaultValue : value);
 			}
 			sheet.addRow(row);
 		}

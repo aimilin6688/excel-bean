@@ -24,7 +24,7 @@ public class ExcelSheet {
 	 */
 	public List<ExcelRow> addRow(ExcelRow... row) {
 		if (rowList == null) {
-			rowList = new LinkedList<ExcelRow>();
+			rowList = new LinkedList<>();
 		}
 		if (row == null || row.length == 0) {
 			return rowList;
@@ -49,7 +49,7 @@ public class ExcelSheet {
 	 * @param heads 行标题列表
 	 */
 	public void addHeadRow(List<String> heads) {
-		if (heads == null || heads.size() == 0) {
+		if (heads == null || heads.isEmpty()) {
 			return;
 		}
 		if (headRow == null) {

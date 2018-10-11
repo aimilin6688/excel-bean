@@ -3,6 +3,10 @@ package com.aimilin.utils;
 import com.aimilin.converter.DictionaryConverter;
 
 public class ConverterUtils {
+	private ConverterUtils() {
+		super();
+	}
+
 	// 转换器
 	public static String converter(String propName, int index, String value, DictionaryConverter... converters) {
 		if (converters != null && converters.length > 0) {

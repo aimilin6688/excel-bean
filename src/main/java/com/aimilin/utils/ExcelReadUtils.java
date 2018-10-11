@@ -29,6 +29,10 @@ import com.aimilin.exception.ExcelReadException;
  */
 public class ExcelReadUtils {
 
+	private ExcelReadUtils() {
+		super();
+	}
+
 	/**
 	 * 得到Excel表中的值
 	 *

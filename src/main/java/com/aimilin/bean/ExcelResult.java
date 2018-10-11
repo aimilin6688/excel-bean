@@ -40,7 +40,7 @@ public class ExcelResult {
 	 */
 	public List<ExcelSheet> addSheet(ExcelSheet sheet) {
 		if (sheetList == null) {
-			sheetList = new LinkedList<ExcelSheet>();
+			sheetList = new LinkedList<>();
 		}
 		sheetList.add(sheet);
 		return sheetList;

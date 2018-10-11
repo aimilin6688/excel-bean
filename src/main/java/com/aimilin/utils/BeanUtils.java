@@ -30,6 +30,10 @@ import com.aimilin.converter.DictionaryConverter;
 public class BeanUtils {
 	private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
 	private static FieldComparator fieldComparator = new FieldComparator();
+	
+	private BeanUtils() {
+		super();
+	}
 
 	/**
 	 * 获取字典中指定的类型值,如果字典中没有指定的值，则返回value
@@ -151,10 +155,10 @@ public class BeanUtils {
 	 */
 	public static <T> List<T> toBean(List<Map<String, String>> list, Class<T> clazz, boolean ignoreException,
 			DictionaryConverter... converters) {
-		if (list == null || list.size() == 0) {
+		if (list == null || list.isEmpty()) {
 			return null;
 		}
-		List<T> result = new ArrayList<T>();
+		List<T> result = new ArrayList<>();
 		for (Map<String, String> map : list) {
 			T bean = toBean(map, clazz, ignoreException, converters);
 			if (bean != null) {
@@ -189,7 +193,7 @@ public class BeanUtils {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T> ExcelResult toResult(List<T> list, boolean ignoreException, DictionaryConverter... converters) {
-		if (list == null || list.size() == 0) {
+		if (list == null || list.isEmpty()) {
 			return null;
 		}
 		Class clazz = list.get(0).getClass();
@@ -229,7 +233,7 @@ public class BeanUtils {
 	protected static List<String> getHeads(Class<?> clazz) {
 		Field[] fields = ReflectionUtils.getFields(clazz);// 根据Class对象获得属性 私有的也可以获得
 		Arrays.sort(fields, fieldComparator);// 属性按照index 排序
-		List<String> heads = new ArrayList<String>();
+		List<String> heads = new ArrayList<>();
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
 			try {
@@ -312,6 +316,10 @@ public class BeanUtils {
 				}
 
 				ExlColumn rowField = field.getAnnotation(ExlColumn.class);
+				if(rowField == null) {
+					continue;
+				}
+				
 				String name = field.getName();
 				if (rowField != null) {
 					name = rowField.value();
@@ -366,7 +374,7 @@ public class BeanUtils {
 	 */
 	public static <T> List<Map<String, String>> toMap(List<T> list, boolean ignoreException,
 			DictionaryConverter... converters) {
-		if (list == null || list.size() == 0) {
+		if (list == null || list.isEmpty()) {
 			return null;
 		}
 
