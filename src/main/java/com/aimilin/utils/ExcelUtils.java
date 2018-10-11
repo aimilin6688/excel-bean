@@ -405,7 +405,7 @@ public class ExcelUtils {
 	 * @throws ExcelReadException 文件读取错误
 	 */
 	public static List<List<String>> read2List(InputStream is, int startLine) {
-		return read2List(is, 1, false, true);
+		return read2List(is, startLine, false, true);
 	}
 
 	/**
@@ -447,7 +447,7 @@ public class ExcelUtils {
 	 * @throws ExcelReadException 文件读取错误
 	 */
 	public static List<List<String>> read2List(String filePath, int startLine) {
-		return read2List(filePath, 1, false, true);
+		return read2List(filePath, startLine, false, true);
 	}
 
 	/**
