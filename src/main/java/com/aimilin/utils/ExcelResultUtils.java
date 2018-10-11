@@ -84,12 +84,12 @@ public class ExcelResultUtils {
 			throw new IllegalArgumentException("sheetList must not be null!");
 		}
 
-		List<List<String>> list = new LinkedList<List<String>>();
+		List<List<String>> list = new LinkedList<>();
 		for (int i = 0; i < sheetList.size(); i++) {
 			ExcelSheet sheet = sheetList.get(i);
 			if (sellectSheet.isSellect(sheet)) {
 				List<ExcelRow> rows = sheet.getRowList();
-				if (rows == null || rows.size() == 0) {
+				if (rows == null || rows.isEmpty()) {
 					continue;
 				}
 
@@ -175,7 +175,7 @@ public class ExcelResultUtils {
 		}
 
 		List<ExcelSheet> sheetList = excelResult.getSheetList();
-		if (sheetList == null || sheetList.size() == 0) {
+		if (sheetList == null || sheetList.isEmpty()) {
 			throw new IllegalArgumentException("sheetList must not be null!");
 		}
 

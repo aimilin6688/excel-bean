@@ -220,7 +220,6 @@ public class ExcelReadUtils {
 			try {
 				wb.close();
 			} catch (IOException e) {
-				;// 忽略关闭异常
 			}
 		}
 	}
@@ -248,7 +247,7 @@ public class ExcelReadUtils {
 		// 空行忽略
 		if (includeBlankLine == false) {
 			List<String> list = row.getCellList();
-			if (list == null || list.size() == 0) {
+			if (list == null || list.isEmpty()) {
 				return null;
 			}
 			int i = 0;
