@@ -378,7 +378,7 @@ public class BeanUtils {
 			return null;
 		}
 
-		List<Map<String, String>> result = new LinkedList<Map<String, String>>();
+		List<Map<String, String>> result = new LinkedList<>();
 		for (T t : list) {
 			Map<String, String> map = toMap(t, ignoreException, converters);
 			if (map != null) {
@@ -422,7 +422,7 @@ public class BeanUtils {
 
 		try {
 			Field[] fields = ReflectionUtils.getFields(obj.getClass());// 根据Class对象获得属性 私有的也可以获得
-			Map<String, String> map = new LinkedHashMap<String, String>();
+			Map<String, String> map = new LinkedHashMap<>();
 			Arrays.sort(fields, fieldComparator);// 属性按照index 排序
 			int index = 0;
 			for (Field field : fields) {
