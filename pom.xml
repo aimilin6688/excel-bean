@@ -4,7 +4,7 @@
 
 	<groupId>com.aimilin</groupId>
 	<artifactId>excel-bean</artifactId>
-	<version>0.0.2.3</version>
+	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>excel-bean</name>
@@ -18,7 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<poi-version>3.14</poi-version>
 		<slf4j-version>1.7.21</slf4j-version>
-		<jdk-version>1.7</jdk-version>
+		<jdk-version>1.8</jdk-version>
 	</properties>
 
 	<dependencies>

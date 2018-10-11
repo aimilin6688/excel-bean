@@ -245,7 +245,7 @@ public class ExcelReadUtils {
 			row.addCell(getValue(hssfCell));
 		}
 		// 空行忽略
-		if (includeBlankLine == false) {
+		if (!includeBlankLine) {
 			List<String> list = row.getCellList();
 			if (list == null || list.isEmpty()) {
 				return null;

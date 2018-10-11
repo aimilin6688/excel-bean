@@ -140,7 +140,7 @@ public class ExcelWriteUtils {
 			return;
 		}
 		List<String> cells = excelRow.getCellList();
-		if (cells == null || cells.size() == 0) {
+		if (cells == null || cells.isEmpty()) {
 			return;
 		}
 		for (int i = 0; i < cells.size(); i++) {
