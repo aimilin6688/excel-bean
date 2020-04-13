@@ -384,7 +384,7 @@ public class ExcelUtils {
 	public static List<List<String>> read2List(byte[] bytes, int startLine, boolean includeHeader,
 			boolean includeBlankLine) {
 		ExcelResult result = read(bytes, includeHeader, includeBlankLine);
-		return result == null ? null : result.toList(startLine);
+		return result == null ? null : ExcelResultUtils.toList(result, startLine);
 	}
 
 	/**

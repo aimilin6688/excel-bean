@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -48,10 +49,10 @@ public class ExcelReadUtils {
 		// 根据单元格类型，以不同的方式读取单元格的值
 		String value = "";
 		switch (cell.getCellType()) {
-		case Cell.CELL_TYPE_STRING:
+		case STRING:
 			value = cell.getRichStringCellValue().getString();
 			break;
-		case Cell.CELL_TYPE_NUMERIC:
+		case NUMERIC:
 			if (DateUtil.isCellDateFormatted(cell)) {
 				value = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cell.getDateCellValue());
 			} else if (cell.getCellStyle().getDataFormat() == 165) {
@@ -64,10 +65,10 @@ public class ExcelReadUtils {
 				}
 			}
 			break;
-		case Cell.CELL_TYPE_BOOLEAN:
+		case BOOLEAN:
 			value = Boolean.toString(cell.getBooleanCellValue());
 			break;
-		case Cell.CELL_TYPE_FORMULA:
+		case FORMULA:
 			try {
 				// 先按照字符串格式获取
 				value = String.valueOf(cell.getStringCellValue());
