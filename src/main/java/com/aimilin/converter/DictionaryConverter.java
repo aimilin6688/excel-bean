@@ -14,7 +14,8 @@ public interface DictionaryConverter {
 	 * 
 	 * @param propName 属性名称
 	 * @param index 属性索引
-	 * @return propValue 传入参数值
+	 * @param propValue 传入参数值
+	 * @return String
 	 */
 	public String convert(String propName, int index, String propValue);
 }

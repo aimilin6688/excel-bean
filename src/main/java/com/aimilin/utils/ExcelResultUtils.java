@@ -67,6 +67,7 @@ public class ExcelResultUtils {
 	 * @author LiuJunGuang
 	 * @param excelResult Excel结果集
 	 * @param startLine 开始行号，从0开始
+	 * @param sellectSheet 选择的Sheet
 	 * @param converters 可选，参数类型转换器
 	 * @return List 数据列表
 	 */
