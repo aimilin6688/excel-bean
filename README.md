@@ -90,14 +90,14 @@ Student1 [姓名=测试2, age=31, birthday=Wed Jan 13 18:33:28 CST 2016, chinese
 private Integer gender;
 ```
 
-** 使用方式说明,主要有以下几类方法 ** 
- ExcelUtils.read  
- ExcelUtils.read2List  
- ExcelUtils.read2Map   
- ExcelUtils.write   
- ExcelUtils.write4List   
- ExcelUtils.write4Map   
- 主要的数据类型byte[],InputStream, String filePath等，可以很方便的再List，Map，Bean与Excel文件之间互转
+**使用方式说明,主要有以下几类方法**   
+> ExcelUtils.read  
+> ExcelUtils.read2List  
+> ExcelUtils.read2Map   
+> ExcelUtils.write   
+> ExcelUtils.write4List   
+> ExcelUtils.write4Map   
+> 主要的数据类型byte[],InputStream, String filePath等，可以很方便的再List，Map，Bean与Excel文件之间互转
 
 
 
