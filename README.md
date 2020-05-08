@@ -20,7 +20,8 @@
 ![有如图Excel表格](http://upload.dingshops.com/dengta_mobile/upload/d4/2016/06/11/20160611214930.png)
 
 - 定义JavaBean类型
-	```java
+
+```java 
 public class Student1 {
 
 	// 如果Excel标题和属性名称一样，则可以不使用注解
@@ -51,22 +52,22 @@ public class Student1 {
 				+ ", mathsScore=" + mathsScore + ", sumScore=" + sumScore + "]";
 	}
 }
-	```
+```
 
 - 调用ExcelUtils 方法 将Excel转换成JavaBean对象列表
-	```java
+```java
 	@Test
 	public void testRead() {
 		List<Student1> stu1List = ExcelUtils.read(excel2003, Student1.class);
 		log.debug("学生信息列表：" + stu1List);
 	}
-	```
+```
 	
 - 输出以下结果：
 
-  ```tex
+```tex
   	学生信息列表：[Student1 [姓名=张三, age=18, birthday=Fri May 20 10:20:39 CST 2016, chineseScore=100.0, mathsScore=99.0, sumScore=199.0], Student1 [姓名=李四, age=17, birthday=Sun Mar 20 19:23:16 CST 2016, chineseScore=20.09, mathsScore=87.7, sumScore=107.79], Student1 [姓名=王五, age=20, birthday=Tue Jan 12 18:33:28 CST 2016, chineseScore=33.5, mathsScore=33.3, sumScore=66.8], Student1 [姓名=测试1, age=30, birthday=Tue Jan 12 18:33:28 CST 2016, chineseScore=60.0, mathsScore=95.0, sumScore=155.0], Student1 [姓名=测试2, age=31, birthday=Wed Jan 13 18:33:28 CST 2016, chineseScore=61.1, mathsScore=80.0, sumScore=141.1]]
-  ```
+```
   
   - 有时候导出Excel数据时会把相应的状态转换成可读的文字，例如数据库中性别存储的是1和2，导出Excel中需要时‘男’和‘女’，这时候可以使用@ExlColumn注解的dictionaries完成类型自动转换。在学生对象中添加如下代码：
   ```java
