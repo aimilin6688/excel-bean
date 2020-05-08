@@ -97,7 +97,7 @@ private Integer gender;
 > ExcelUtils.write   
 > ExcelUtils.write4List   
 > ExcelUtils.write4Map   
-> 主要的数据类型byte[],InputStream, String filePath等，可以很方便的再List，Map，Bean与Excel文件之间互转
+- 主要的数据类型byte[]，InputStream，String filePath等，可以很方便的再List，Map，Bean与Excel文件之间互转
 
 
 
